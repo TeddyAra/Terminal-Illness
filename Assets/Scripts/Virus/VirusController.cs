@@ -10,9 +10,9 @@ public class VirusController : MonoBehaviour {
     [SerializeField] private float maxJumpForce = 5f;
     [SerializeField] private float jumpAngle = 45f;
 
-    [SerializeField] private float minSpitForce = 30f;
-    [SerializeField] private float maxSpitForce = 45f;
-    [SerializeField] private float spitAngle = 30f;
+    [SerializeField] private float minSneezeForce = 30f;
+    [SerializeField] private float maxSneezeForce = 45f;
+    [SerializeField] private float sneezeAngle = 30f;
 
     [Header("References")]
     [SerializeField] private CinemachineCamera virusCam = null;
@@ -20,6 +20,7 @@ public class VirusController : MonoBehaviour {
 
     private bool inBody => npcController != null;
     private float jumpTimer = 0f;
+    private bool leftBody = false;
 
     private Rigidbody rb = null;
     private NPCController npcController = null;
@@ -49,25 +50,27 @@ public class VirusController : MonoBehaviour {
 
         if (InputManager.Instance.buttonInputs["Jump"].Up) {
             if (!inBody) {
+                Vector3 forward = transform.position - virusCam.transform.position;
+                forward.y = 0;
+                forward.Normalize();
+
                 float force = Mathf.Lerp(minJumpForce, maxJumpForce, Mathf.Clamp01(jumpTimer / maxHoldLength));
-                ApplyForce(force, jumpAngle);
+                ApplyForce(force, jumpAngle, forward);
             } else {
+                Vector3 forward = npcController.transform.forward;
+
                 ExitBody();
 
-                float force = Mathf.Lerp(minSpitForce, maxSpitForce, Mathf.Clamp01(jumpTimer / maxHoldLength));
-                ApplyForce(force, spitAngle);
+                float force = Mathf.Lerp(minSneezeForce, maxSneezeForce, Mathf.Clamp01(jumpTimer / maxHoldLength));
+                ApplyForce(force, sneezeAngle, forward);
             }
         }
     }
 
-    private void ApplyForce(float force, float angle) {
-        Vector3 forward = transform.position - virusCam.transform.position;
-        forward.y = 0;
-        forward.Normalize();
+    private void ApplyForce(float force, float angle, Vector3 direction) {
+        Vector3 right = Vector3.Cross(direction, Vector3.up);
 
-        Vector3 right = Vector3.Cross(forward, Vector3.up);
-
-        Vector3 jumpForce = Quaternion.AngleAxis(-angle, right) * forward;
+        Vector3 jumpForce = Quaternion.AngleAxis(-angle, right) * direction;
         rb.AddForce(jumpForce * force, ForceMode.Impulse);
     }
 
@@ -75,6 +78,9 @@ public class VirusController : MonoBehaviour {
         rb.useGravity = false;
         rb.linearVelocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
+
+        leftBody = true;
+        rb.excludeLayers = LayerMask.NameToLayer("NPC");
 
         npcController = controller;
         npcCam.Follow = controller.transform;
@@ -103,6 +109,13 @@ public class VirusController : MonoBehaviour {
                 NPCController controller = collision.gameObject.GetComponent<NPCController>();
                 EnterBody(controller);
                 break;
+        }
+    }
+
+    private void OnCollisionExit(Collision collision) {
+        if (!leftBody) {
+            leftBody = true;
+            rb.excludeLayers = 0;
         }
     }
 }
