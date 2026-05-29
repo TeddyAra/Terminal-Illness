@@ -1,5 +1,6 @@
 public enum HumanAIStates {
     Stationary, 
     Wandering, 
-    ControlledByPlayer
+    ControlledByPlayer, 
+    Dead
 }

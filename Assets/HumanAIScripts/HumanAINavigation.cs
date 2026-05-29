@@ -72,6 +72,8 @@ public class HumanAINavigation : MonoBehaviour
             case HumanAIStates.ControlledByPlayer:
 
                 break; 
+            case HumanAIStates.Dead: 
+                break;
         }
     }
 
@@ -103,6 +105,9 @@ public class HumanAINavigation : MonoBehaviour
                 break;
             case HumanAIStates.ControlledByPlayer:
                 navMeshAgent.ResetPath();
+                break; 
+            case HumanAIStates.Dead:
+                navMeshAgent.ResetPath(); 
                 break; 
         }
     }

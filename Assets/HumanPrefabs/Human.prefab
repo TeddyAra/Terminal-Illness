@@ -67,7 +67,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 7c3f9f23836cea74bbc8710ccfc51df0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -125,6 +125,7 @@ GameObject:
   - component: {fileID: 775346279226175017}
   - component: {fileID: 8247184995353492631}
   - component: {fileID: 5913138766400249646}
+  - component: {fileID: 3715599775564342605}
   m_Layer: 0
   m_Name: Human
   m_TagString: Untagged
@@ -186,5 +187,21 @@ MonoBehaviour:
   minStationaryTime: 1
   maxStationaryTime: 5
   stoppingDistance: 1
-  point: {fileID: 0}
   currentState: 0
+--- !u!114 &3715599775564342605
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4106929124031575538}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c597c1f9e733173408c625b941e09dc3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HumanInfectionLevel
+  maxInfection: 100
+  minInfection: 0
+  infectionRate: 10
+  humanRenderer: {fileID: 6043435780969832344}
+  isInfected: 0

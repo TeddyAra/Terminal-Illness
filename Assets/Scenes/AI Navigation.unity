@@ -821,6 +821,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpecialHuman
       objectReference: {fileID: 0}
+    - target: {fileID: 4447644919369175503, guid: 20f835d283c544945a84a06ad1cc5596, type: 3}
+      propertyPath: humanMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: 7c3f9f23836cea74bbc8710ccfc51df0, type: 2}
+    - target: {fileID: 4447644919369175503, guid: 20f835d283c544945a84a06ad1cc5596, type: 3}
+      propertyPath: infectionRate
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6771122323644558106, guid: 20f835d283c544945a84a06ad1cc5596, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 7c3f9f23836cea74bbc8710ccfc51df0, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
