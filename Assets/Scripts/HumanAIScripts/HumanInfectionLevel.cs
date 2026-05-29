@@ -25,14 +25,15 @@ public class HumanInfectionLevel : MonoBehaviour
 
             humanRenderer.SetPropertyBlock(humanPropertyBlock);
 
-            if (currentInfectionLevel >= maxInfection)
+            if (currentInfectionLevel >= maxInfection && !IsDead) {
                 IsDead = true;
+            }
         }
     }
     public bool IsHostingVirus { get; private set; } = false;
     public bool IsDead {
         get {
-            return IsDead;
+            return isDead;
         }
         set {
             isDead = value; 
@@ -55,6 +56,8 @@ public class HumanInfectionLevel : MonoBehaviour
             CurrentInfectionLevel += infectionRate * Time.deltaTime; 
             Debug.Log(CurrentInfectionLevel);
         }
+
+        
     }
    
     public void SetHostingVirus(bool isHostingVirus) {

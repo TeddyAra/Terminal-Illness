@@ -11,7 +11,7 @@ public class HumanSpawner : MonoBehaviour
 
     public void Initialize(int numberOfHumans) {
         for (int i = 0; i < numberOfHumans; i++) {
-            Instantiate(humanPrefab, new Vector3(Random.Range(-500f, 500f), 50, Random.Range(-500f, 500f)), Quaternion.identity);
+            Instantiate(humanPrefab);
         }
     }
 

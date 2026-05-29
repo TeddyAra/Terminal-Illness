@@ -1,4 +1,6 @@
+using NUnit.Framework;
 using System.Collections;
+using System.Collections.Generic;
 using Unity.AI.Navigation;
 using UnityEngine;
 using UnityEngine.AI;
@@ -9,6 +11,8 @@ public class HumanAINavigation : MonoBehaviour
     [SerializeField] private float minStationaryTime; 
     [SerializeField] private float maxStationaryTime;
     [SerializeField] private float stoppingDistance;
+    [SerializeField] private float deathBombRadius = 5f;
+    [SerializeField] private LayerMask humanLayer; 
 
     public HumanAIStates currentState = HumanAIStates.Wandering;
 
@@ -107,9 +111,36 @@ public class HumanAINavigation : MonoBehaviour
                 navMeshAgent.ResetPath();
                 break; 
             case HumanAIStates.Dead:
+                Debug.Log("Dead."); 
                 navMeshAgent.ResetPath(); 
+                DeathBomb();
                 break; 
         }
+    }
+
+    private void DeathBomb() {
+        Collider[] colliders = Physics.OverlapSphere(transform.position, deathBombRadius, humanLayer); 
+        foreach (var col in colliders) {
+            if (col.gameObject == this)
+                continue; 
+
+            col.GetComponent<HumanAINavigation>().SetScarePoint(transform.position);
+            Debug.Log("Death bombing human"); 
+        }
+    }
+
+    public void SetScarePoint(Vector3 origin) {
+        Debug.Log("Death bombed af"); 
+
+        navMeshAgent.ResetPath(); 
+        Vector3 originToTransform = transform.position - origin; 
+
+        Vector3 newWalkPoint = originToTransform * 10; 
+
+        SetState(HumanAIStates.Wandering); 
+
+        SetDestination(newWalkPoint);
+
     }
 
 }

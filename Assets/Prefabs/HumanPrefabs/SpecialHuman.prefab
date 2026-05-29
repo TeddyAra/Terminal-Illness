@@ -82,6 +82,10 @@ MonoBehaviour:
   minStationaryTime: 1
   maxStationaryTime: 5
   stoppingDistance: 1
+  deathBombRadius: 5
+  humanLayer:
+    serializedVersion: 2
+    m_Bits: 256
   currentState: 1
   pointsToWalkTo:
   - {fileID: 0}
