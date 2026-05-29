@@ -21,6 +21,7 @@ public class VirusController : MonoBehaviour {
     private bool inBody => npcController != null;
     private float jumpTimer = 0f;
     private bool leftBody = false;
+    private bool isGrounded = false;
 
     private Rigidbody rb = null;
     private NPCController npcController = null;
@@ -41,7 +42,7 @@ public class VirusController : MonoBehaviour {
 
     private void Jump() {
         if (InputManager.Instance.buttonInputs["Jump"].Down) {
-            jumpTimer = 0;
+            jumpTimer = 0f;
         }
 
         if (InputManager.Instance.buttonInputs["Jump"].Held) {
@@ -49,13 +50,19 @@ public class VirusController : MonoBehaviour {
         }
 
         if (InputManager.Instance.buttonInputs["Jump"].Up) {
-            if (!inBody) {
-                Vector3 forward = transform.position - virusCam.transform.position;
-                forward.y = 0;
-                forward.Normalize();
+            if (jumpTimer == 0f) {
+                return;
+            }
 
-                float force = Mathf.Lerp(minJumpForce, maxJumpForce, Mathf.Clamp01(jumpTimer / maxHoldLength));
-                ApplyForce(force, jumpAngle, forward);
+            if (!inBody) {
+                if (isGrounded) {
+                    Vector3 forward = transform.position - virusCam.transform.position;
+                    forward.y = 0;
+                    forward.Normalize();
+
+                    float force = Mathf.Lerp(minJumpForce, maxJumpForce, Mathf.Clamp01(jumpTimer / maxHoldLength));
+                    ApplyForce(force, jumpAngle, forward);
+                }
             } else {
                 Vector3 forward = npcController.transform.forward;
 
@@ -99,23 +106,35 @@ public class VirusController : MonoBehaviour {
         npcCam.gameObject.SetActive(false);
     }
 
-    private void OnCollisionEnter(Collision collision) {
-        switch (LayerMask.LayerToName(collision.gameObject.layer)) {
+    private void OnCollisionEnter(Collision other) {
+        switch (LayerMask.LayerToName(other.gameObject.layer)) {
             case "Default":
                 rb.linearVelocity = Vector3.zero;
                 rb.angularVelocity = Vector3.zero;
                 break;
             case "NPC":
-                NPCController controller = collision.gameObject.GetComponent<NPCController>();
+                NPCController controller = other.gameObject.GetComponent<NPCController>();
                 EnterBody(controller);
                 break;
         }
     }
 
-    private void OnCollisionExit(Collision collision) {
+    private void OnCollisionExit(Collision other) {
         if (!leftBody) {
             leftBody = true;
             rb.excludeLayers = 0;
+        }
+    }
+
+    private void OnTriggerEnter(Collider other) {
+        if (LayerMask.LayerToName(other.gameObject.layer) == "Default") {
+            isGrounded = true;
+        }
+    }
+
+    private void OnTriggerExit(Collider other) {
+        if (LayerMask.LayerToName(other.gameObject.layer) == "Default") {
+            isGrounded = false;
         }
     }
 }
