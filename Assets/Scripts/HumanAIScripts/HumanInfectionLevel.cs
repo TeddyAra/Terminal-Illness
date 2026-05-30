@@ -1,4 +1,4 @@
-using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -8,11 +8,15 @@ public class HumanInfectionLevel : MonoBehaviour {
     [SerializeField] private float normalInfectionRate = 1f;
     [SerializeField] private float controlledInfectionRate = 2f;
     [SerializeField] private float controlledSprintingInfectionRate = 2.5f; 
-    [SerializeField] private MeshRenderer humanRenderer;
+    [SerializeField] private SkinnedMeshRenderer humanRenderer;
 
     [SerializeField] private HumanManager manager = null;
 
-    [SerializeField] private GameObject particlesParent; 
+    [SerializeField] private GameObject particlesParent;
+    [SerializeField] private GameObject humanRagdollPrefab;
+    [SerializeField] private GameObject[] particleObjects; 
+
+    
 
     private HumanAINavigation aiNavigation = null;
 
@@ -53,10 +57,14 @@ public class HumanInfectionLevel : MonoBehaviour {
                 return;
             }
 
+            StartCoroutine(SpawnRagdollDelayed()); 
+
             isDead = value;
             aiNavigation.SetState(HumanAIStates.Dead);
             //gameObject.layer = LayerMask.NameToLayer("Default");
             manager.humanControlledNavigation.rb.isKinematic = true;
+
+
         }
     }
 
@@ -77,21 +85,30 @@ public class HumanInfectionLevel : MonoBehaviour {
         }
     }
 
+    private IEnumerator SpawnRagdollDelayed() {
+        yield return new WaitForSeconds(0.5f); 
+        Instantiate(humanRagdollPrefab, transform.position, humanRagdollPrefab.transform.rotation); 
+
+        gameObject.SetActive(false);
+    }
+
     public void SetHostingVirus(bool isHostingVirus) {
         IsHostingVirus = isHostingVirus;
     }
     
     private void UpdateParticles(float infectionRate) {
-        ParticleSystem[] particles = particlesParent.GetComponentsInChildren<ParticleSystem>();
-
-        Debug.Log($"Number of particles systems: {particles.Length}"); 
-
-        foreach (ParticleSystem particle in particles) {
-            var emission = particle.emission; 
-            Debug.Log(emission.rateOverTime); 
-
-            emission.rateOverTime = 5 * (infectionRate/maxInfection);          
-            
+        if (manager.infectionLevel.currentInfectionLevel >= 25.0f) {
+            particleObjects[0].SetActive(true);
+            particleObjects[1].SetActive(true);
         }
+        if (manager.infectionLevel.currentInfectionLevel >= 50.0f) {
+            particleObjects[2].SetActive(true);
+            particleObjects[3].SetActive(true);
+        }
+        if (manager.infectionLevel.currentInfectionLevel >= 75.0f) {
+            particleObjects[4].SetActive(true);
+            particleObjects[5].SetActive(true);
+        }
+        
     }
 }
