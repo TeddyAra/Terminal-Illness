@@ -19839,18 +19839,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2774705238308318452, guid: e49d5aae48809b94c9a3ac7a2cd8b4c2, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 2774705238308318452, guid: e49d5aae48809b94c9a3ac7a2cd8b4c2, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 2774705238308318452, guid: e49d5aae48809b94c9a3ac7a2cd8b4c2, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 2774705238308318452, guid: e49d5aae48809b94c9a3ac7a2cd8b4c2, type: 3}
       propertyPath: m_LocalPosition.x
       value: -23.53764
       objectReference: {fileID: 0}
@@ -23378,6 +23366,38 @@ Transform:
   - {fileID: 1949135053}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &467685704
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 467685702}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.AI.Navigation::Unity.AI.Navigation.NavMeshSurface
+  m_SerializedVersion: 0
+  m_AgentTypeID: 0
+  m_CollectObjects: 2
+  m_Size: {x: 10, y: 10, z: 10}
+  m_Center: {x: 0, y: 2, z: 0}
+  m_LayerMask:
+    serializedVersion: 2
+    m_Bits: 512
+  m_UseGeometry: 1
+  m_DefaultArea: 0
+  m_GenerateLinks: 0
+  m_IgnoreNavMeshAgent: 1
+  m_IgnoreNavMeshObstacle: 1
+  m_OverrideTileSize: 0
+  m_TileSize: 256
+  m_OverrideVoxelSize: 0
+  m_VoxelSize: 0.6666667
+  m_MinRegionArea: 2
+  m_NavMeshData: {fileID: 23800000, guid: 86a460655be72f04486c36f83606afda, type: 2}
+  m_BuildHeightMesh: 0
 --- !u!43 &472258358
 Mesh:
   m_ObjectHideFlags: 0
@@ -36248,6 +36268,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 467685703}
     m_Modifications:
+    - target: {fileID: 237662501305401195, guid: 3f96a1fb44059194eaf6c2dd6ebb4dc7, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: d25fc7bd4b0c96f41897d31daeb5d698, type: 2}
     - target: {fileID: 585080173095117891, guid: 3f96a1fb44059194eaf6c2dd6ebb4dc7, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -61433,6 +61457,10 @@ PrefabInstance:
     - target: {fileID: 4106929124031575538, guid: 06e4e7d3e5cb9654883de7db58ce3835, type: 3}
       propertyPath: m_Name
       value: Human (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5913138766400249646, guid: 06e4e7d3e5cb9654883de7db58ce3835, type: 3}
+      propertyPath: humanLayer.m_Bits
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
