@@ -18,6 +18,8 @@ public class VirusController : MonoBehaviour {
     [SerializeField] private CinemachineCamera virusCam = null;
     [SerializeField] private CinemachineCamera npcCam = null;
 
+    [SerializeField] private ParticleSystem slimeBurst = null;
+
     private bool inBody => human != null;
     private float jumpTimer = 0f;
     private bool leftBody = false;
@@ -131,6 +133,8 @@ public class VirusController : MonoBehaviour {
                 rb.linearVelocity = Vector3.zero;
                 rb.angularVelocity = Vector3.zero;
                 rb.useGravity = false;
+                slimeBurst.Play();
+                Debug.Log("slimeburst plays");
                 break;
             case "Human":
                 HumanManager human = other.gameObject.GetComponent<HumanManager>();
