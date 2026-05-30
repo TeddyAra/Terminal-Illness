@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7331035272782055481}
   - component: {fileID: 6043435780969832344}
   - component: {fileID: 1045292659772425311}
-  m_Layer: 8
+  m_Layer: 6
   m_Name: Capsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -124,12 +124,12 @@ GameObject:
   m_Component:
   - component: {fileID: 775346279226175017}
   - component: {fileID: 8247184995353492631}
+  - component: {fileID: 572200601680088061}
   - component: {fileID: 5913138766400249646}
   - component: {fileID: 3715599775564342605}
   - component: {fileID: 5608370428348683378}
-  - component: {fileID: 572200601680088061}
   - component: {fileID: 6956994343685346778}
-  m_Layer: 8
+  m_Layer: 6
   m_Name: Human
   m_TagString: Human
   m_Icon: {fileID: 0}
@@ -176,6 +176,21 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &572200601680088061
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4106929124031575538}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11c80b46733d43f4cbdb5039d4b5c8e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NPCController
+  hidePoint: {fileID: 3060478290249394996}
+  infectionLevel: {fileID: 3715599775564342605}
+  aiNavigation: {fileID: 5913138766400249646}
 --- !u!114 &5913138766400249646
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -195,8 +210,9 @@ MonoBehaviour:
   deathBombRadius: 5
   humanLayer:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 0
   currentState: 0
+  navMeshAgent: {fileID: 8247184995353492631}
 --- !u!114 &3715599775564342605
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -213,6 +229,7 @@ MonoBehaviour:
   minInfection: 0
   infectionRate: 10
   humanRenderer: {fileID: 1533012354988611528}
+  manager: {fileID: 572200601680088061}
   isInfected: 0
 --- !u!136 &5608370428348683378
 CapsuleCollider:
@@ -237,19 +254,6 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
---- !u!114 &572200601680088061
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4106929124031575538}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 11c80b46733d43f4cbdb5039d4b5c8e8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::NPCController
-  hidePoint: {fileID: 3060478290249394996}
 --- !u!135 &6956994343685346778
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -280,7 +284,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3060478290249394996}
-  m_Layer: 8
+  m_Layer: 6
   m_Name: HidePoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -369,6 +373,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 5e6cf11254e75184180922029732b132, type: 3}
       propertyPath: m_Name
       value: 1MTALL_HUMAN
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 5e6cf11254e75184180922029732b132, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

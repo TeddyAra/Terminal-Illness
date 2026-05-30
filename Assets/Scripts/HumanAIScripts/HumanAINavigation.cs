@@ -5,8 +5,7 @@ using Unity.AI.Navigation;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class HumanAINavigation : MonoBehaviour
-{
+public class HumanAINavigation : MonoBehaviour {
     [SerializeField] private float randomWalkingPointMaxDistance;
     [SerializeField] private float minStationaryTime; 
     [SerializeField] private float maxStationaryTime;
@@ -16,16 +15,10 @@ public class HumanAINavigation : MonoBehaviour
 
     public HumanAIStates currentState = HumanAIStates.Wandering;
 
-    NavMeshAgent navMeshAgent;
-
-
+    [SerializeField] private NavMeshAgent navMeshAgent;
 
     private void Awake() {
-        navMeshAgent = GetComponent<NavMeshAgent>();
-
         SpawnHuman();
-
-
     }
 
     private void Update() {
@@ -41,7 +34,6 @@ public class HumanAINavigation : MonoBehaviour
         if (currentState == HumanAIStates.Wandering) {
             PickNextWalkingPoint();
         }
-        
     }
 
     public void SetDestination(Vector3 destinationPoint) {
@@ -58,7 +50,6 @@ public class HumanAINavigation : MonoBehaviour
 
             return hit.position;     
         }
-        
         
         return Vector3.zero;
     }
@@ -85,8 +76,14 @@ public class HumanAINavigation : MonoBehaviour
         Debug.Log("SettingStationary"); 
         navMeshAgent.isStopped = true; 
         SetState(HumanAIStates.Stationary);
+
         float stationaryTime = Random.Range(minStationaryTime, maxStationaryTime); 
         yield return new WaitForSeconds(stationaryTime);
+
+        if (currentState == HumanAIStates.Dead) {
+            yield break;
+
+        }
         PickNextWalkingPoint();
         SetState(HumanAIStates.Wandering);
         navMeshAgent.isStopped = false; 
@@ -140,7 +137,5 @@ public class HumanAINavigation : MonoBehaviour
         SetState(HumanAIStates.Wandering); 
 
         SetDestination(newWalkPoint);
-
     }
-
 }
