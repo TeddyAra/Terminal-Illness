@@ -1,9 +1,11 @@
+using System;
 using UnityEngine;
 
 public class HumanInfectionLevel : MonoBehaviour {
     [SerializeField] private float maxInfection = 100f;
     [SerializeField] private float minInfection = 0f;
-    [SerializeField] private float infectionRate = 1f;
+    [SerializeField] private float normalInfectionRate = 1f;
+    [SerializeField] private float controlledInfectionRate = 2f;
     [SerializeField] private MeshRenderer humanRenderer;
 
     [SerializeField] private HumanManager manager = null;
@@ -41,6 +43,7 @@ public class HumanInfectionLevel : MonoBehaviour {
         set {
             isDead = value;
             aiNavigation.SetState(HumanAIStates.Dead);
+            gameObject.layer = LayerMask.NameToLayer("Default");
         }
     }
 
@@ -53,7 +56,8 @@ public class HumanInfectionLevel : MonoBehaviour {
 
     private void Update() {
         if (IsHostingVirus) {
-            //CurrentInfectionLevel += infectionRate * Time.deltaTime; 
+            float infectionRate = aiNavigation.currentState == HumanAIStates.ControlledByPlayer ? controlledInfectionRate : normalInfectionRate;
+            CurrentInfectionLevel += infectionRate * Time.deltaTime; 
         }
     }
 

@@ -88,7 +88,7 @@ public class HumanAINavigation : MonoBehaviour {
         }
     }
 
-    private IEnumerator StationaryTimer() {
+    public IEnumerator StationaryTimer() {
         navMeshAgent.isStopped = true; 
         SetState(HumanAIStates.Stationary);
 
@@ -112,6 +112,8 @@ public class HumanAINavigation : MonoBehaviour {
     public void SetState(HumanAIStates newState) {
         currentState = newState;
 
+        navMeshAgent.enabled = true;
+
         switch (currentState) {
             case HumanAIStates.Stationary:
                 navMeshAgent.isStopped = true; 
@@ -128,7 +130,8 @@ public class HumanAINavigation : MonoBehaviour {
                 break; 
             case HumanAIStates.Dead:
                 navMeshAgent.isStopped = true;
-                navMeshAgent.ResetPath(); 
+                navMeshAgent.ResetPath();
+                navMeshAgent.enabled = false;
                 DeathBomb();
                 break; 
         }
