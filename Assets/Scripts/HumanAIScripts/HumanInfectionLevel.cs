@@ -45,15 +45,17 @@ public class HumanInfectionLevel : MonoBehaviour {
             return isDead;
         }
         set {
+            StatManager.Instance.IncreaseKills();
+            if (TryGetComponent(out SpecialHumanAINavigation s)) {
+                StatManager.Instance.ToggleWinStatus();
+                SceneManager.LoadScene("EndScreen");
+                return;
+            }
+
             isDead = value;
             aiNavigation.SetState(HumanAIStates.Dead);
             //gameObject.layer = LayerMask.NameToLayer("Default");
             manager.humanControlledNavigation.rb.isKinematic = true;
-            StatManager.Instance.IncreaseKills();
-
-            if (TryGetComponent(out SpecialHumanAINavigation s)) {
-                SceneManager.LoadScene("EndScreen");
-            }
         }
     }
 
