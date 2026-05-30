@@ -10,6 +10,7 @@ public class HumanAINavigation : MonoBehaviour {
     [SerializeField] private float deathBombRadius = 5f;
     [SerializeField] private LayerMask humanLayer;
     [SerializeField] private float maxTimeStuck = 1f;
+    [SerializeField] private Animator animator; 
 
 
     float timeStuck; 
@@ -80,6 +81,7 @@ public class HumanAINavigation : MonoBehaviour {
                 }
                 break; 
             case HumanAIStates.Stationary:
+                //animator.SetBool("Walking", false);
                 break; 
             case HumanAIStates.ControlledByPlayer:
                 break; 
@@ -123,11 +125,13 @@ public class HumanAINavigation : MonoBehaviour {
 
         switch (currentState) {
             case HumanAIStates.Stationary:
+                animator.SetBool("Walking", false);
                 navMeshAgent.isStopped = true; 
                 navMeshAgent.ResetPath();
                 navMeshAgent.enabled = true;
                 break; 
             case HumanAIStates.Wandering:
+                animator.SetBool("Walking", true);
                 navMeshAgent.enabled = true;
                 break;
             case HumanAIStates.ControlledByPlayer:

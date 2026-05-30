@@ -11,7 +11,7 @@ PrefabInstance:
     - target: {fileID: 572200601680088061, guid: 06e4e7d3e5cb9654883de7db58ce3835, type: 3}
       propertyPath: aiNavigation
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 174111465296353626}
     - target: {fileID: 775346279226175017, guid: 06e4e7d3e5cb9654883de7db58ce3835, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2.3
@@ -96,5 +96,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   maxTimeStuck: 1
+  animator: {fileID: 6359860761887238741}
   currentState: 1
   pointsToWalkTo: []
+--- !u!95 &6359860761887238741 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 6227212302796545751, guid: 06e4e7d3e5cb9654883de7db58ce3835, type: 3}
+  m_PrefabInstance: {fileID: 1020420673075065986}
+  m_PrefabAsset: {fileID: 0}

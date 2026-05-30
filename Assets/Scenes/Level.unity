@@ -20585,7 +20585,7 @@ PrefabInstance:
       objectReference: {fileID: 189383390}
     - target: {fileID: 8862481721497072293, guid: e49d5aae48809b94c9a3ac7a2cd8b4c2, type: 3}
       propertyPath: surviveDepletionRate
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9169072136043114335, guid: e49d5aae48809b94c9a3ac7a2cd8b4c2, type: 3}
       propertyPath: m_Constraints
@@ -28695,7 +28695,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5913138766400249646, guid: 06e4e7d3e5cb9654883de7db58ce3835, type: 3}
       propertyPath: humanLayer.m_Bits
-      value: 0
+      value: 64
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -32568,7 +32568,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5913138766400249646, guid: 06e4e7d3e5cb9654883de7db58ce3835, type: 3}
       propertyPath: humanLayer.m_Bits
-      value: 0
+      value: 64
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -40386,7 +40386,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5913138766400249646, guid: 06e4e7d3e5cb9654883de7db58ce3835, type: 3}
       propertyPath: humanLayer.m_Bits
-      value: 0
+      value: 64
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -48835,7 +48835,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5913138766400249646, guid: 06e4e7d3e5cb9654883de7db58ce3835, type: 3}
       propertyPath: humanLayer.m_Bits
-      value: 0
+      value: 64
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -62201,7 +62201,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5913138766400249646, guid: 06e4e7d3e5cb9654883de7db58ce3835, type: 3}
       propertyPath: humanLayer.m_Bits
-      value: 0
+      value: 64
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -63648,7 +63648,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5913138766400249646, guid: 06e4e7d3e5cb9654883de7db58ce3835, type: 3}
       propertyPath: humanLayer.m_Bits
-      value: 0
+      value: 64
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -71633,7 +71633,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5913138766400249646, guid: 06e4e7d3e5cb9654883de7db58ce3835, type: 3}
       propertyPath: humanLayer.m_Bits
-      value: 0
+      value: 64
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -88000,7 +88000,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5913138766400249646, guid: 06e4e7d3e5cb9654883de7db58ce3835, type: 3}
       propertyPath: humanLayer.m_Bits
-      value: 0
+      value: 64
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
