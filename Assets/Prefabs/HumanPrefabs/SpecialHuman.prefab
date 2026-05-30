@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 572200601680088061, guid: 06e4e7d3e5cb9654883de7db58ce3835, type: 3}
+      propertyPath: aiNavigation
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 775346279226175017, guid: 06e4e7d3e5cb9654883de7db58ce3835, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2.3
@@ -54,7 +58,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8247184995353492631, guid: 06e4e7d3e5cb9654883de7db58ce3835, type: 3}
       propertyPath: m_Radius
-      value: 1.5
+      value: 0.75
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5913138766400249646, guid: 06e4e7d3e5cb9654883de7db58ce3835, type: 3}
@@ -90,7 +94,7 @@ MonoBehaviour:
   deathBombRadius: 5
   humanLayer:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 0
   maxTimeStuck: 1
   currentState: 1
   pointsToWalkTo: []

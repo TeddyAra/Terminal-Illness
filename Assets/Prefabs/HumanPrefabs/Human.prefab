@@ -213,10 +213,9 @@ MonoBehaviour:
   deathBombRadius: 5
   humanLayer:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 0
   maxTimeStuck: 1
   currentState: 0
-  navMeshAgent: {fileID: 8247184995353492631}
 --- !u!114 &3715599775564342605
 MonoBehaviour:
   m_ObjectHideFlags: 0
