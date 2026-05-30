@@ -16,7 +16,7 @@ MonoBehaviour:
   - From: VirusCamera
     To: NPCCamera
     Blend:
-      Style: 1
+      Style: 0
       Time: 1
       CustomCurve:
         serializedVersion: 2
@@ -27,7 +27,7 @@ MonoBehaviour:
   - From: NPCCamera
     To: VirusCamera
     Blend:
-      Style: 1
+      Style: 0
       Time: 1
       CustomCurve:
         serializedVersion: 2
