@@ -43,7 +43,8 @@ public class HumanInfectionLevel : MonoBehaviour {
         set {
             isDead = value;
             aiNavigation.SetState(HumanAIStates.Dead);
-            gameObject.layer = LayerMask.NameToLayer("Default");
+            //gameObject.layer = LayerMask.NameToLayer("Default");
+            manager.humanControlledNavigation.rb.isKinematic = true;
         }
     }
 

@@ -5,7 +5,7 @@ public class HumanControlledNavigation : MonoBehaviour {
     [SerializeField] private float speedup = 0.1f;
     [SerializeField] private float drag = 0.9f;
     [SerializeField] private float rotateSpeed = 1f;
-    [SerializeField] private Rigidbody rb = null;
+    public Rigidbody rb = null;
 
     [SerializeField] private HumanManager manager = null;
 
