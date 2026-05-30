@@ -39,7 +39,7 @@ public class VirusController : MonoBehaviour {
 
     private Collider col = null;
     private Rigidbody rb = null;
-    private HumanManager human = null;
+    public HumanManager human = null;
     private Transform lastHuman = null;
 
     private void Start() {
@@ -182,7 +182,7 @@ public class VirusController : MonoBehaviour {
         }
     }
 
-    private void ExitBody() {
+    public void ExitBody() {
         rb.useGravity = true;
 
         if (human.aiNavigation.currentState == HumanAIStates.ControlledByPlayer) {
@@ -224,6 +224,11 @@ public class VirusController : MonoBehaviour {
                 } else {
                     EnterBody(human);
                 }
+                break;
+            case "NonStickable":
+                rb.linearVelocity = Vector3.zero;
+                rb.angularVelocity = Vector3.zero;
+                slimeBurst.Play();
                 break;
         }
     }

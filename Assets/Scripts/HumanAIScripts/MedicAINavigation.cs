@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class GuardAINavigation : HumanAINavigation
+public class MedicAINavigation : HumanAINavigation
 {
     [SerializeField] private VirusController playerController;
     [SerializeField] private float distanceBeforeChase = 10.0f;
@@ -12,7 +12,10 @@ public class GuardAINavigation : HumanAINavigation
     private void Update() {
         if (playerController.IsInBody()) {
             if (DistanceToPlayer() <=  distanceBeforeChase) {
-                SetState(HumanAIStates.ChasingPlayer); 
+                if (playerController.human?.humanInfectionLevel.CurrentInfectionLevel >= 50) {
+                    SetState(HumanAIStates.ChasingPlayer); 
+                }
+                
             }
         }
     }
@@ -21,7 +24,9 @@ public class GuardAINavigation : HumanAINavigation
         SetDestination(transform.position);
 
         if (DistanceToPlayer() <= sprayDistance) {
-            
+            playerController.ExitBody(); 
+            SetState(HumanAIStates.Wandering);
+            playerController.human.humanInfectionLevel.CurrentInfectionLevel = 0f; 
         }
     }
 }
