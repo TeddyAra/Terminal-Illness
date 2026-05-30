@@ -213,10 +213,9 @@ MonoBehaviour:
   deathBombRadius: 5
   humanLayer:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 0
   maxTimeStuck: 1
   currentState: 0
-  navMeshAgent: {fileID: 8247184995353492631}
 --- !u!114 &3715599775564342605
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -246,11 +245,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0584ab070e831d848862398fceffccee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HumanControlledNavigation
-  maxSpeed: 15
-  speedup: 10
-  drag: 0.975
+  maxSpeed: 10
+  speedup: 0.5
+  drag: 0.9
+  rotateSpeed: 0.025
   rb: {fileID: 4785998104497933533}
   manager: {fileID: 572200601680088061}
+  npcCam: {fileID: 0}
 --- !u!136 &5608370428348683378
 CapsuleCollider:
   m_ObjectHideFlags: 0

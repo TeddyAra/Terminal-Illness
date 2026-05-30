@@ -51,6 +51,7 @@ public class VirusController : MonoBehaviour {
         }
 
         if (InputManager.Instance.buttonInputs["Control"].Down) {
+            human.humanControlledNavigati0n.npcCam = npcCam.transform;
             human.aiNavigation.SetState(HumanAIStates.ControlledByPlayer);
         }
     }
