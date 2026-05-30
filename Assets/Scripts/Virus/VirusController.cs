@@ -46,7 +46,7 @@ public class VirusController : MonoBehaviour {
             jumpTimer = 0f;
         }
 
-        if (InputManager.Instance.buttonInputs["Jump"].Held && isGrounded) {
+        if (InputManager.Instance.buttonInputs["Jump"].Held && (inBody || isGrounded)) {
             jumpTimer += Time.deltaTime;
         }
 
@@ -65,6 +65,7 @@ public class VirusController : MonoBehaviour {
                     ApplyForce(force, jumpAngle, forward);
                 }
             } else {
+                Debug.Log("Jump");
                 Vector3 forward = human.transform.forward;
 
                 ExitBody();
@@ -76,6 +77,7 @@ public class VirusController : MonoBehaviour {
     }
 
     private void ApplyForce(float force, float angle, Vector3 direction) {
+        Debug.Log("Force");
         rb.useGravity = true;
         Vector3 right = Vector3.Cross(direction, Vector3.up);
 

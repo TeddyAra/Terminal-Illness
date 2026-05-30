@@ -46,8 +46,6 @@ public class HumanAINavigation : MonoBehaviour {
         Vector3 randomPoint = transform.position + Random.insideUnitSphere * randomWalkingPointMaxDistance;
 
         if (NavMesh.SamplePosition(randomPoint, out hit, randomWalkingPointMaxDistance, NavMesh.AllAreas)){ 
-            Debug.Log(hit.position); 
-
             return hit.position;     
         }
         
@@ -73,7 +71,6 @@ public class HumanAINavigation : MonoBehaviour {
     }
 
     private IEnumerator StationaryTimer() {
-        Debug.Log("SettingStationary"); 
         navMeshAgent.isStopped = true; 
         SetState(HumanAIStates.Stationary);
 
@@ -108,7 +105,6 @@ public class HumanAINavigation : MonoBehaviour {
                 navMeshAgent.ResetPath();
                 break; 
             case HumanAIStates.Dead:
-                Debug.Log("Dead."); 
                 navMeshAgent.ResetPath(); 
                 DeathBomb();
                 break; 
@@ -122,13 +118,10 @@ public class HumanAINavigation : MonoBehaviour {
                 continue; 
 
             col.GetComponent<HumanAINavigation>().SetScarePoint(transform.position);
-            Debug.Log("Death bombing human"); 
         }
     }
 
     public void SetScarePoint(Vector3 origin) {
-        Debug.Log("Death bombed af"); 
-
         navMeshAgent.ResetPath(); 
         Vector3 originToTransform = transform.position - origin; 
 
