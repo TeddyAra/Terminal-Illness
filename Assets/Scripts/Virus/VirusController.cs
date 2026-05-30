@@ -21,8 +21,7 @@ public class VirusController : MonoBehaviour {
     private bool inBody => human != null;
     private float jumpTimer = 0f;
     private bool leftBody = false;
-    private bool isGrounded => colliderCount > 0;
-    private int colliderCount = 0;
+    private bool isGrounded = false;
 
     private Rigidbody rb = null;
     private HumanManager human = null;
@@ -32,6 +31,7 @@ public class VirusController : MonoBehaviour {
     }
 
     private void Update() {
+        CheckIsGrounded();
         CheckStartControl();
         Jump();
     }
@@ -40,6 +40,10 @@ public class VirusController : MonoBehaviour {
         if (inBody) {
             transform.position = human.hidePoint.position;
         }
+    }
+
+    private void CheckIsGrounded() {
+        isGrounded = Physics.OverlapSphere(transform.position, 1.1f, 1<<LayerMask.NameToLayer("Default")).Length > 0;
     }
 
     private void CheckStartControl() {
@@ -51,12 +55,19 @@ public class VirusController : MonoBehaviour {
         }
 
         if (InputManager.Instance.buttonInputs["Control"].Down) {
-            human.humanControlledNavigati0n.npcCam = npcCam.transform;
+            human.humanControlledNavigation.npcCam = npcCam.transform;
             human.aiNavigation.SetState(HumanAIStates.ControlledByPlayer);
         }
     }
 
     private void Jump() {
+        if (inBody && human.infectionLevel.IsDead) {
+            Vector3 forward = human.transform.forward;
+
+            ExitBody();
+            ApplyForce(minSneezeForce, sneezeAngle, forward);
+        }
+
         if (InputManager.Instance.buttonInputs["Jump"].Down) {
             jumpTimer = 0f;
         }
@@ -103,8 +114,8 @@ public class VirusController : MonoBehaviour {
         rb.linearVelocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
 
-        leftBody = true;
         rb.excludeLayers = LayerMask.NameToLayer("Human");
+        leftBody = false;
 
         this.human = human;
         npcCam.Follow = human.transform;
@@ -118,6 +129,13 @@ public class VirusController : MonoBehaviour {
 
     private void ExitBody() {
         rb.useGravity = true;
+
+        if (human.aiNavigation.currentState == HumanAIStates.ControlledByPlayer) {
+            human.aiNavigation.SetState(HumanAIStates.Stationary);
+        }
+        if (!human.infectionLevel.IsDead) {
+            StartCoroutine(human.aiNavigation.StationaryTimer());
+        }
 
         human.infectionLevel.SetHostingVirus(false);
         human = null;
@@ -141,21 +159,9 @@ public class VirusController : MonoBehaviour {
     }
 
     private void OnCollisionExit(Collision other) {
-        if (!leftBody) {
+        if (!leftBody && LayerMask.LayerToName(other.gameObject.layer) == "Human") {
             leftBody = true;
             rb.excludeLayers = 0;
-        }
-    }
-
-    private void OnTriggerEnter(Collider other) {
-        if (LayerMask.LayerToName(other.gameObject.layer) == "Default") {
-            colliderCount++;
-        }
-    }
-
-    private void OnTriggerExit(Collider other) {
-        if (LayerMask.LayerToName(other.gameObject.layer) == "Default") {
-            colliderCount--;
         }
     }
 }
