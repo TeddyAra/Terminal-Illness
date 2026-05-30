@@ -47,7 +47,7 @@ public class InputManager : MonoBehaviour {
         foreach (InputAction action in inputActions.FindActionMap("Player")) {
             if (action.type == InputActionType.Button && buttonInputs.ContainsKey(action.name)) {
                 buttonInputs[action.name].Update(action);
-            } else if (action.type == InputActionType.Button && vectorInputs.ContainsKey(action.name)) {
+            } else if (action.type == InputActionType.Value && vectorInputs.ContainsKey(action.name)) {
                 vectorInputs[action.name].Update(action);
             }
         }
