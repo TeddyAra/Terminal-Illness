@@ -57,7 +57,7 @@ MonoBehaviour:
   maxSneezeForce: 45
   sneezeAngle: -15
   surviveSlider: {fileID: 0}
-  surviveTime: 5
+  surviveTime: 15
   surviveDepletionRate: 1
   surviveAdditionRate: 1.5
   virusCam: {fileID: 0}
