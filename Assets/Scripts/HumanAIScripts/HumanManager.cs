@@ -6,4 +6,5 @@ public class HumanManager : MonoBehaviour {
     public HumanInfectionLevel infectionLevel = null;
     public HumanAINavigation aiNavigation = null;
     public HumanControlledNavigation humanControlledNavigation = null;
+    public HumanInfectionLevel humanInfectionLevel = null; 
 }
