@@ -7,6 +7,7 @@ public class HumanInfectionLevel : MonoBehaviour {
     [SerializeField] private float minInfection = 0f;
     [SerializeField] private float normalInfectionRate = 1f;
     [SerializeField] private float controlledInfectionRate = 2f;
+    [SerializeField] private float controlledSprintingInfectionRate = 2.5f; 
     [SerializeField] private MeshRenderer humanRenderer;
 
     [SerializeField] private HumanManager manager = null;
@@ -67,6 +68,9 @@ public class HumanInfectionLevel : MonoBehaviour {
     private void Update() {
         if (IsHostingVirus) {
             float infectionRate = aiNavigation.currentState == HumanAIStates.ControlledByPlayer ? controlledInfectionRate : normalInfectionRate;
+            if (manager.humanControlledNavigation.sprintInput) {
+                infectionRate = controlledSprintingInfectionRate; 
+            }
             CurrentInfectionLevel += infectionRate * Time.deltaTime; 
         }
     }
@@ -82,6 +86,7 @@ public class HumanInfectionLevel : MonoBehaviour {
 
         foreach (ParticleSystem particle in particles) {
             var emission = particle.emission; 
+            Debug.Log(emission.rateOverTime); 
 
             emission.rateOverTime = 5 * (infectionRate/maxInfection);          
             
