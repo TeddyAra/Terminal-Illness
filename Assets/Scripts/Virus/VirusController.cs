@@ -2,6 +2,8 @@ using System.Collections;
 using Unity.Cinemachine;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class VirusController : MonoBehaviour {
     [Header("Jump")]
@@ -14,6 +16,12 @@ public class VirusController : MonoBehaviour {
     [SerializeField] private float maxSneezeForce = 45f;
     [SerializeField] private float sneezeAngle = 30f;
 
+    [Header("Survive")]
+    [SerializeField] private Slider surviveSlider = null;
+    [SerializeField] private float surviveTime = 5f;
+    [SerializeField] private float surviveDepletionRate = 1f;
+    [SerializeField] private float surviveAdditionRate = 1.5f;
+
     [Header("References")]
     [SerializeField] private CinemachineCamera virusCam = null;
     [SerializeField] private CinemachineCamera npcCam = null;
@@ -24,6 +32,7 @@ public class VirusController : MonoBehaviour {
     private float jumpTimer = 0f;
     private bool isGrounded = false;
     private bool ignoreCollisions = false;
+    private float surviveTimer = 0f;
 
     private Collider col = null;
     private Rigidbody rb = null;
@@ -33,6 +42,8 @@ public class VirusController : MonoBehaviour {
     private void Start() {
         rb = GetComponent<Rigidbody>();
         col = GetComponent<Collider>();
+
+        surviveTimer = surviveTime;
     }
 
     private void Update() {
@@ -44,7 +55,15 @@ public class VirusController : MonoBehaviour {
     private void LateUpdate() {
         if (inBody) {
             transform.position = human.hidePoint.position;
+            surviveTimer += Time.deltaTime * surviveAdditionRate;
+        } else {
+            surviveTimer -= Time.deltaTime * surviveDepletionRate;
+            if (surviveTimer <= 0f) {
+                SceneManager.LoadScene("EndScreen");
+            }
         }
+
+        surviveSlider.value = surviveTimer / surviveTime;
     }
 
     private void CheckIsGrounded() {
@@ -126,7 +145,6 @@ public class VirusController : MonoBehaviour {
         rb.excludeLayers = 1 << LayerMask.NameToLayer("Human");
 
         this.human = human;
-        Debug.Log("Set");
         lastHuman = human.transform;
         npcCam.Follow = human.transform;
         npcCam.LookAt = human.transform;
@@ -136,7 +154,9 @@ public class VirusController : MonoBehaviour {
         virusCam.gameObject.SetActive(false);
         npcCam.gameObject.SetActive(true);
 
-        StatManager.Instance.IncreaseInfections();
+        if (human.infectionLevel.CurrentInfectionLevel != 0) {
+            StatManager.Instance.IncreaseInfections();
+        }
     }
 
     private void ExitBody() {
