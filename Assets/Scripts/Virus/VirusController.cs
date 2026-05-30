@@ -2,6 +2,8 @@ using System.Collections;
 using Unity.Cinemachine;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class VirusController : MonoBehaviour {
     [Header("Jump")]
@@ -14,16 +16,26 @@ public class VirusController : MonoBehaviour {
     [SerializeField] private float maxSneezeForce = 45f;
     [SerializeField] private float sneezeAngle = 30f;
 
+    [Header("Survive")]
+    [SerializeField] private Slider surviveSlider = null;
+    [SerializeField] private float surviveTime = 5f;
+    [SerializeField] private float surviveDepletionRate = 1f;
+    [SerializeField] private float surviveAdditionRate = 1.5f;
+
     [Header("References")]
     [SerializeField] private CinemachineCamera virusCam = null;
     [SerializeField] private CinemachineCamera npcCam = null;
 
     [SerializeField] private ParticleSystem slimeBurst = null;
 
+    [SerializeField] private Animator animator; 
+
     private bool inBody => human != null;
     private float jumpTimer = 0f;
     private bool isGrounded = false;
     private bool ignoreCollisions = false;
+    private float surviveTimer = 0f;
+    private bool prevIsGrounded = false; 
 
     private Collider col = null;
     private Rigidbody rb = null;
@@ -33,6 +45,8 @@ public class VirusController : MonoBehaviour {
     private void Start() {
         rb = GetComponent<Rigidbody>();
         col = GetComponent<Collider>();
+
+        surviveTimer = surviveTime;
     }
 
     private void Update() {
@@ -44,6 +58,30 @@ public class VirusController : MonoBehaviour {
     private void LateUpdate() {
         if (inBody) {
             transform.position = human.hidePoint.position;
+            surviveTimer += Time.deltaTime * surviveAdditionRate;
+        } else {
+            surviveTimer -= Time.deltaTime * surviveDepletionRate;
+            if (surviveTimer <= 0f) {
+                SceneManager.LoadScene("EndScreen");
+            }
+        }
+
+        surviveSlider.value = surviveTimer / surviveTime;
+
+        if (isGrounded) {
+            if (!prevIsGrounded) {
+                animator.SetBool("IsGrounded", true); 
+            }
+
+            prevIsGrounded = true; 
+        }
+        else {
+            animator.SetBool("IsGrounded", false); 
+            prevIsGrounded = false; 
+            
+            Vector3 normalizedSpeed = rb.linearVelocity.normalized * 3;
+
+            transform.rotation = Quaternion.LookRotation(Vector3.up, normalizedSpeed); 
         }
     }
 
@@ -79,6 +117,7 @@ public class VirusController : MonoBehaviour {
 
         if (InputManager.Instance.buttonInputs["Jump"].Held && (inBody || isGrounded)) {
             jumpTimer += Time.deltaTime;
+            animator.SetBool("ChargingJump", true); 
         }
 
         if (InputManager.Instance.buttonInputs["Jump"].Up) {
@@ -105,6 +144,9 @@ public class VirusController : MonoBehaviour {
                 ApplyForce(force, sneezeAngle, forward);
                 StatManager.Instance.IncreaseJumps();
             }
+
+            animator.SetBool("ChargingJump", false); 
+            animator.SetTrigger("Jump"); 
         }
     }
 
@@ -126,7 +168,6 @@ public class VirusController : MonoBehaviour {
         rb.excludeLayers = 1 << LayerMask.NameToLayer("Human");
 
         this.human = human;
-        Debug.Log("Set");
         lastHuman = human.transform;
         npcCam.Follow = human.transform;
         npcCam.LookAt = human.transform;
@@ -136,7 +177,9 @@ public class VirusController : MonoBehaviour {
         virusCam.gameObject.SetActive(false);
         npcCam.gameObject.SetActive(true);
 
-        StatManager.Instance.IncreaseInfections();
+        if (human.infectionLevel.CurrentInfectionLevel != 0) {
+            StatManager.Instance.IncreaseInfections();
+        }
     }
 
     private void ExitBody() {
@@ -160,6 +203,9 @@ public class VirusController : MonoBehaviour {
         if (collision.transform == lastHuman || ignoreCollisions) {
             return;
         }
+
+        transform.rotation = Quaternion.FromToRotation(transform.up, collision.contacts[0].normal); 
+
 
         switch (LayerMask.LayerToName(collision.gameObject.layer)) {
             case "Default":
@@ -201,5 +247,9 @@ public class VirusController : MonoBehaviour {
         ignoreCollisions = true;
         yield return new WaitForFixedUpdate();
         ignoreCollisions = false;
+    }
+
+    public bool IsInBody() {
+        return inBody;
     }
 }
