@@ -5,8 +5,7 @@ using Unity.AI.Navigation;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class HumanAINavigation : MonoBehaviour
-{
+public class HumanAINavigation : MonoBehaviour {
     [SerializeField] private float randomWalkingPointMaxDistance;
     [SerializeField] private float minStationaryTime; 
     [SerializeField] private float maxStationaryTime;
@@ -16,16 +15,10 @@ public class HumanAINavigation : MonoBehaviour
 
     public HumanAIStates currentState = HumanAIStates.Wandering;
 
-    NavMeshAgent navMeshAgent;
-
-
+    [SerializeField] private NavMeshAgent navMeshAgent;
 
     private void Awake() {
-        navMeshAgent = GetComponent<NavMeshAgent>();
-
         SpawnHuman();
-
-
     }
 
     private void Update() {
@@ -41,7 +34,6 @@ public class HumanAINavigation : MonoBehaviour
         if (currentState == HumanAIStates.Wandering) {
             PickNextWalkingPoint();
         }
-        
     }
 
     public void SetDestination(Vector3 destinationPoint) {
@@ -54,11 +46,8 @@ public class HumanAINavigation : MonoBehaviour
         Vector3 randomPoint = transform.position + Random.insideUnitSphere * randomWalkingPointMaxDistance;
 
         if (NavMesh.SamplePosition(randomPoint, out hit, randomWalkingPointMaxDistance, NavMesh.AllAreas)){ 
-            Debug.Log(hit.position); 
-
             return hit.position;     
         }
-        
         
         return Vector3.zero;
     }
@@ -82,11 +71,16 @@ public class HumanAINavigation : MonoBehaviour
     }
 
     private IEnumerator StationaryTimer() {
-        Debug.Log("SettingStationary"); 
         navMeshAgent.isStopped = true; 
         SetState(HumanAIStates.Stationary);
+
         float stationaryTime = Random.Range(minStationaryTime, maxStationaryTime); 
         yield return new WaitForSeconds(stationaryTime);
+
+        if (currentState == HumanAIStates.Dead) {
+            yield break;
+
+        }
         PickNextWalkingPoint();
         SetState(HumanAIStates.Wandering);
         navMeshAgent.isStopped = false; 
@@ -111,7 +105,6 @@ public class HumanAINavigation : MonoBehaviour
                 navMeshAgent.ResetPath();
                 break; 
             case HumanAIStates.Dead:
-                Debug.Log("Dead."); 
                 navMeshAgent.ResetPath(); 
                 DeathBomb();
                 break; 
@@ -125,13 +118,10 @@ public class HumanAINavigation : MonoBehaviour
                 continue; 
 
             col.GetComponent<HumanAINavigation>().SetScarePoint(transform.position);
-            Debug.Log("Death bombing human"); 
         }
     }
 
     public void SetScarePoint(Vector3 origin) {
-        Debug.Log("Death bombed af"); 
-
         navMeshAgent.ResetPath(); 
         Vector3 originToTransform = transform.position - origin; 
 
@@ -140,7 +130,5 @@ public class HumanAINavigation : MonoBehaviour
         SetState(HumanAIStates.Wandering); 
 
         SetDestination(newWalkPoint);
-
     }
-
 }

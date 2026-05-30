@@ -18,13 +18,14 @@ public class VirusController : MonoBehaviour {
     [SerializeField] private CinemachineCamera virusCam = null;
     [SerializeField] private CinemachineCamera npcCam = null;
 
-    private bool inBody => npcController != null;
+    private bool inBody => human != null;
     private float jumpTimer = 0f;
     private bool leftBody = false;
-    private bool isGrounded = false;
+    private bool isGrounded => colliderCount > 0;
+    private int colliderCount = 0;
 
     private Rigidbody rb = null;
-    private NPCController npcController = null;
+    private HumanManager human = null;
 
     private void Start() {
         rb = GetComponent<Rigidbody>();
@@ -36,7 +37,7 @@ public class VirusController : MonoBehaviour {
 
     private void LateUpdate() {
         if (inBody) {
-            transform.position = npcController.hidePoint.position;
+            transform.position = human.hidePoint.position;
         }
     }
 
@@ -45,7 +46,7 @@ public class VirusController : MonoBehaviour {
             jumpTimer = 0f;
         }
 
-        if (InputManager.Instance.buttonInputs["Jump"].Held) {
+        if (InputManager.Instance.buttonInputs["Jump"].Held && (inBody || isGrounded)) {
             jumpTimer += Time.deltaTime;
         }
 
@@ -64,7 +65,8 @@ public class VirusController : MonoBehaviour {
                     ApplyForce(force, jumpAngle, forward);
                 }
             } else {
-                Vector3 forward = npcController.transform.forward;
+                Debug.Log("Jump");
+                Vector3 forward = human.transform.forward;
 
                 ExitBody();
 
@@ -75,23 +77,27 @@ public class VirusController : MonoBehaviour {
     }
 
     private void ApplyForce(float force, float angle, Vector3 direction) {
+        Debug.Log("Force");
+        rb.useGravity = true;
         Vector3 right = Vector3.Cross(direction, Vector3.up);
 
         Vector3 jumpForce = Quaternion.AngleAxis(-angle, right) * direction;
         rb.AddForce(jumpForce * force, ForceMode.Impulse);
     }
 
-    private void EnterBody(NPCController controller) {
+    private void EnterBody(HumanManager human) {
         rb.useGravity = false;
         rb.linearVelocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
 
         leftBody = true;
-        rb.excludeLayers = LayerMask.NameToLayer("NPC");
+        rb.excludeLayers = LayerMask.NameToLayer("Human");
 
-        npcController = controller;
-        npcCam.Follow = controller.transform;
-        npcCam.LookAt = controller.transform;
+        this.human = human;
+        npcCam.Follow = human.transform;
+        npcCam.LookAt = human.transform;
+
+        human.infectionLevel.SetHostingVirus(true);
 
         virusCam.gameObject.SetActive(false);
         npcCam.gameObject.SetActive(true);
@@ -100,7 +106,8 @@ public class VirusController : MonoBehaviour {
     private void ExitBody() {
         rb.useGravity = true;
 
-        npcController = null;
+        human.infectionLevel.SetHostingVirus(false);
+        human = null;
 
         virusCam.gameObject.SetActive(true);
         npcCam.gameObject.SetActive(false);
@@ -111,10 +118,11 @@ public class VirusController : MonoBehaviour {
             case "Default":
                 rb.linearVelocity = Vector3.zero;
                 rb.angularVelocity = Vector3.zero;
+                rb.useGravity = false;
                 break;
-            case "NPC":
-                NPCController controller = other.gameObject.GetComponent<NPCController>();
-                EnterBody(controller);
+            case "Human":
+                HumanManager human = other.gameObject.GetComponent<HumanManager>();
+                EnterBody(human);
                 break;
         }
     }
@@ -128,13 +136,13 @@ public class VirusController : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other) {
         if (LayerMask.LayerToName(other.gameObject.layer) == "Default") {
-            isGrounded = true;
+            colliderCount++;
         }
     }
 
     private void OnTriggerExit(Collider other) {
         if (LayerMask.LayerToName(other.gameObject.layer) == "Default") {
-            isGrounded = false;
+            colliderCount--;
         }
     }
 }
