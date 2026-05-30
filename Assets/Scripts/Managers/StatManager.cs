@@ -1,6 +1,7 @@
 using UnityEngine;
 
 public class StatManager : MonoBehaviour {
+    private bool winStatus = false;
     private int jumps = 0;
     private int kills = 0;
     private int infections = 0;
@@ -30,6 +31,10 @@ public class StatManager : MonoBehaviour {
         infections++;
     }
 
+    public void ToggleWinStatus() {
+        winStatus = true;
+    }
+
     public int GetJumps() {
         return jumps;
     }
@@ -42,18 +47,21 @@ public class StatManager : MonoBehaviour {
         return infections;
     }
 
+    public bool GetWinStatus() {
+        return winStatus;
+    }
+
     private void Update() { 
         time += Time.deltaTime;
     }
 
     public void GetTime(out int minutes, out float seconds) {
-        Debug.Log(time);
         minutes = (int)Mathf.Floor(time / 60f);
-        seconds = time % 60f;
-        Debug.Log(seconds);
+        seconds = (int)Mathf.Floor(time % 60f);
     }
 
     public void ResetValues() {
+        winStatus = false;
         time = 0f;
         jumps = 0;
         infections = 0;

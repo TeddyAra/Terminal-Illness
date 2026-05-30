@@ -7,6 +7,7 @@ public class HumanInfectionLevel : MonoBehaviour {
     [SerializeField] private float minInfection = 0f;
     [SerializeField] private float normalInfectionRate = 1f;
     [SerializeField] private float controlledInfectionRate = 2f;
+    [SerializeField] private float controlledSprintingInfectionRate = 2.5f; 
     [SerializeField] private MeshRenderer humanRenderer;
 
     [SerializeField] private HumanManager manager = null;
@@ -45,15 +46,17 @@ public class HumanInfectionLevel : MonoBehaviour {
             return isDead;
         }
         set {
+            StatManager.Instance.IncreaseKills();
+            if (TryGetComponent(out SpecialHumanAINavigation s)) {
+                StatManager.Instance.ToggleWinStatus();
+                SceneManager.LoadScene("EndScreen");
+                return;
+            }
+
             isDead = value;
             aiNavigation.SetState(HumanAIStates.Dead);
             //gameObject.layer = LayerMask.NameToLayer("Default");
             manager.humanControlledNavigation.rb.isKinematic = true;
-            StatManager.Instance.IncreaseKills();
-
-            if (TryGetComponent(out SpecialHumanAINavigation s)) {
-                SceneManager.LoadScene("EndScreen");
-            }
         }
     }
 
@@ -67,6 +70,9 @@ public class HumanInfectionLevel : MonoBehaviour {
     private void Update() {
         if (IsHostingVirus) {
             float infectionRate = aiNavigation.currentState == HumanAIStates.ControlledByPlayer ? controlledInfectionRate : normalInfectionRate;
+            if (manager.humanControlledNavigation.sprintInput) {
+                infectionRate = controlledSprintingInfectionRate; 
+            }
             CurrentInfectionLevel += infectionRate * Time.deltaTime; 
         }
     }
@@ -82,6 +88,7 @@ public class HumanInfectionLevel : MonoBehaviour {
 
         foreach (ParticleSystem particle in particles) {
             var emission = particle.emission; 
+            Debug.Log(emission.rateOverTime); 
 
             emission.rateOverTime = 5 * (infectionRate/maxInfection);          
             

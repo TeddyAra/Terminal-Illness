@@ -13,6 +13,8 @@ public class HumanControlledNavigation : MonoBehaviour {
     private HumanAINavigation aiNavigation = null;
     [HideInInspector] public Transform npcCam = null;
 
+    public bool sprintInput { get; private set; }
+
     private Vector3 velocity = Vector3.zero;
 
     private void Start() {
@@ -27,7 +29,7 @@ public class HumanControlledNavigation : MonoBehaviour {
 
     private void ControlHuman() {
         Vector2 input = InputManager.Instance.vectorInputs["Move"].Input;
-        bool sprintInput = InputManager.Instance.buttonInputs["Sprint"].Held; 
+        sprintInput = InputManager.Instance.buttonInputs["Sprint"].Held; 
 
         if (input.y == 0) {
             velocity *= drag;
@@ -38,8 +40,10 @@ public class HumanControlledNavigation : MonoBehaviour {
             if (velocity.magnitude > maxSpeed * clamp) {
                 velocity = velocity.normalized * maxSpeed * clamp;
 
-                if (sprintInput)
-                    velocity *= sprintSpeedMultiplier;
+                if (sprintInput) {
+                    velocity *= sprintSpeedMultiplier; 
+                    
+                }
             }
         }
 
