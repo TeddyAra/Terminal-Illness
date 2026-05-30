@@ -22,14 +22,17 @@ public class VirusController : MonoBehaviour {
 
     private bool inBody => human != null;
     private float jumpTimer = 0f;
-    private bool leftBody = false;
     private bool isGrounded = false;
+    private bool ignoreCollisions = false;
 
+    private Collider col = null;
     private Rigidbody rb = null;
     private HumanManager human = null;
+    private Transform lastHuman = null;
 
     private void Start() {
         rb = GetComponent<Rigidbody>();
+        col = GetComponent<Collider>();
     }
 
     private void Update() {
@@ -91,6 +94,7 @@ public class VirusController : MonoBehaviour {
 
                     float force = Mathf.Lerp(minJumpForce, maxJumpForce, Mathf.Clamp01(jumpTimer / maxHoldLength));
                     ApplyForce(force, jumpAngle, forward);
+                    StatManager.Instance.IncreaseJumps();
                 }
             } else {
                 Vector3 forward = human.transform.forward;
@@ -99,6 +103,7 @@ public class VirusController : MonoBehaviour {
 
                 float force = Mathf.Lerp(minSneezeForce, maxSneezeForce, Mathf.Clamp01(jumpTimer / maxHoldLength));
                 ApplyForce(force, sneezeAngle, forward);
+                StatManager.Instance.IncreaseJumps();
             }
         }
     }
@@ -116,10 +121,13 @@ public class VirusController : MonoBehaviour {
         rb.linearVelocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
 
-        rb.excludeLayers = LayerMask.NameToLayer("Human");
-        leftBody = false;
+        StartCoroutine(IgnoreCollisions());
+        col.excludeLayers = 1 << LayerMask.NameToLayer("Human");
+        rb.excludeLayers = 1 << LayerMask.NameToLayer("Human");
 
         this.human = human;
+        Debug.Log("Set");
+        lastHuman = human.transform;
         npcCam.Follow = human.transform;
         npcCam.LookAt = human.transform;
 
@@ -127,6 +135,8 @@ public class VirusController : MonoBehaviour {
 
         virusCam.gameObject.SetActive(false);
         npcCam.gameObject.SetActive(true);
+
+        StatManager.Instance.IncreaseInfections();
     }
 
     private void ExitBody() {
@@ -146,26 +156,50 @@ public class VirusController : MonoBehaviour {
         npcCam.gameObject.SetActive(false);
     }
 
-    private void OnCollisionEnter(Collision other) {
-        switch (LayerMask.LayerToName(other.gameObject.layer)) {
+    private void OnCollisionEnter(Collision collision) {
+        if (collision.transform == lastHuman || ignoreCollisions) {
+            return;
+        }
+
+        switch (LayerMask.LayerToName(collision.gameObject.layer)) {
             case "Default":
                 rb.linearVelocity = Vector3.zero;
                 rb.angularVelocity = Vector3.zero;
                 rb.useGravity = false;
                 slimeBurst.Play();
-                Debug.Log("slimeburst plays");
                 break;
             case "Human":
-                HumanManager human = other.gameObject.GetComponent<HumanManager>();
-                EnterBody(human);
+                HumanManager human = collision.gameObject.GetComponent<HumanManager>();
+                if (human.infectionLevel.IsDead) {
+                    rb.linearVelocity = Vector3.zero;
+                    rb.angularVelocity = Vector3.zero;
+                    //rb.useGravity = false;
+                    slimeBurst.Play();
+                } else {
+                    EnterBody(human);
+                }
                 break;
         }
     }
 
-    private void OnCollisionExit(Collision other) {
-        if (!leftBody && LayerMask.LayerToName(other.gameObject.layer) == "Human") {
-            leftBody = true;
-            rb.excludeLayers = 0;
+    private void OnCollisionExit(Collision collision) {
+        if (collision.transform == lastHuman || ignoreCollisions) {
+            StartCoroutine(ResetLastHuman());
         }
+    }
+
+    private IEnumerator ResetLastHuman() {
+        yield return null;
+        Debug.Log("Reset");
+        lastHuman = null;
+        StartCoroutine(IgnoreCollisions());
+        col.excludeLayers = 0;
+        rb.excludeLayers = 0;
+    }
+
+    private IEnumerator IgnoreCollisions() {
+        ignoreCollisions = true;
+        yield return new WaitForFixedUpdate();
+        ignoreCollisions = false;
     }
 }

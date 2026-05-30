@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class HumanInfectionLevel : MonoBehaviour {
     [SerializeField] private float maxInfection = 100f;
@@ -9,6 +10,8 @@ public class HumanInfectionLevel : MonoBehaviour {
     [SerializeField] private MeshRenderer humanRenderer;
 
     [SerializeField] private HumanManager manager = null;
+
+    [SerializeField] private GameObject particlesParent; 
 
     private HumanAINavigation aiNavigation = null;
 
@@ -25,6 +28,7 @@ public class HumanInfectionLevel : MonoBehaviour {
             currentInfectionLevel = Mathf.Clamp(currentInfectionLevel, minInfection, maxInfection);
 
             humanPropertyBlock.SetFloat("_InfectionRate", currentInfectionLevel / maxInfection); 
+            UpdateParticles(currentInfectionLevel);
 
             humanRenderer.SetPropertyBlock(humanPropertyBlock);
 
@@ -43,7 +47,13 @@ public class HumanInfectionLevel : MonoBehaviour {
         set {
             isDead = value;
             aiNavigation.SetState(HumanAIStates.Dead);
-            gameObject.layer = LayerMask.NameToLayer("Default");
+            //gameObject.layer = LayerMask.NameToLayer("Default");
+            manager.humanControlledNavigation.rb.isKinematic = true;
+            StatManager.Instance.IncreaseKills();
+
+            if (TryGetComponent(out SpecialHumanAINavigation s)) {
+                SceneManager.LoadScene("EndScreen");
+            }
         }
     }
 
@@ -63,5 +73,18 @@ public class HumanInfectionLevel : MonoBehaviour {
 
     public void SetHostingVirus(bool isHostingVirus) {
         IsHostingVirus = isHostingVirus;
+    }
+    
+    private void UpdateParticles(float infectionRate) {
+        ParticleSystem[] particles = particlesParent.GetComponentsInChildren<ParticleSystem>();
+
+        Debug.Log($"Number of particles systems: {particles.Length}"); 
+
+        foreach (ParticleSystem particle in particles) {
+            var emission = particle.emission; 
+
+            emission.rateOverTime = 5 * (infectionRate/maxInfection);          
+            
+        }
     }
 }
