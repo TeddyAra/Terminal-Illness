@@ -193,7 +193,7 @@ MonoBehaviour:
   hidePoint: {fileID: 3060478290249394996}
   infectionLevel: {fileID: 3715599775564342605}
   aiNavigation: {fileID: 5913138766400249646}
-  humanControlledNavigati0n: {fileID: 7910186913891548181}
+  humanControlledNavigation: {fileID: 7910186913891548181}
 --- !u!114 &5913138766400249646
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -213,7 +213,7 @@ MonoBehaviour:
   deathBombRadius: 5
   humanLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   maxTimeStuck: 1
   currentState: 0
 --- !u!114 &3715599775564342605
@@ -230,7 +230,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::HumanInfectionLevel
   maxInfection: 100
   minInfection: 0
-  infectionRate: 10
+  normalInfectionRate: 10
+  controlledInfectionRate: 20
   humanRenderer: {fileID: 1533012354988611528}
   manager: {fileID: 572200601680088061}
 --- !u!114 &7910186913891548181
@@ -245,11 +246,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0584ab070e831d848862398fceffccee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HumanControlledNavigation
-  maxSpeed: 15
-  speedup: 10
-  drag: 0.975
+  maxSpeed: 10
+  speedup: 0.5
+  drag: 0.9
+  rotateSpeed: 0.025
   rb: {fileID: 4785998104497933533}
   manager: {fileID: 572200601680088061}
+  npcCam: {fileID: 0}
 --- !u!136 &5608370428348683378
 CapsuleCollider:
   m_ObjectHideFlags: 0
