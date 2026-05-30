@@ -8,6 +8,8 @@ public class HumanInfectionLevel : MonoBehaviour {
 
     [SerializeField] private HumanManager manager = null;
 
+    [SerializeField] private GameObject particlesParent; 
+
     private HumanAINavigation aiNavigation = null;
 
     private MaterialPropertyBlock humanPropertyBlock;
@@ -23,6 +25,7 @@ public class HumanInfectionLevel : MonoBehaviour {
             currentInfectionLevel = Mathf.Clamp(currentInfectionLevel, minInfection, maxInfection);
 
             humanPropertyBlock.SetFloat("_InfectionRate", currentInfectionLevel / maxInfection); 
+            UpdateParticles(currentInfectionLevel);
 
             humanRenderer.SetPropertyBlock(humanPropertyBlock);
 
@@ -59,5 +62,16 @@ public class HumanInfectionLevel : MonoBehaviour {
 
     public void SetHostingVirus(bool isHostingVirus) {
         IsHostingVirus = isHostingVirus;
+    }
+    
+    private void UpdateParticles(float infectionRate) {
+        ParticleSystem[] particles = particlesParent.GetComponentsInChildren<ParticleSystem>();
+
+        foreach (ParticleSystem particle in particles) {
+            var emission = particle.emission; 
+
+            emission.rateOverTime = 5 * (infectionRate/maxInfection);          
+            
+        }
     }
 }
