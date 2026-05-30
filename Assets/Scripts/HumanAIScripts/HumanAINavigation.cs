@@ -110,6 +110,10 @@ public class HumanAINavigation : MonoBehaviour {
     }
 
     public void SetState(HumanAIStates newState) {
+        if (currentState == HumanAIStates.Dead) {
+            return;
+        }
+
         currentState = newState;
 
         navMeshAgent.enabled = true;
@@ -140,8 +144,9 @@ public class HumanAINavigation : MonoBehaviour {
     private void DeathBomb() {
         Collider[] colliders = Physics.OverlapSphere(transform.position, deathBombRadius, humanLayer); 
         foreach (var col in colliders) {
-            if (col.gameObject == this)
-                continue; 
+            if (col.gameObject == this || col.gameObject.GetComponent<HumanInfectionLevel>().IsDead) {
+                continue;
+            }
 
             col.GetComponent<HumanAINavigation>().SetScarePoint(transform.position);
         }
