@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class HumanControlledNavigation : MonoBehaviour {
     [SerializeField] private float maxSpeed = 5f;
+    [SerializeField] private float sprintSpeedMultiplier = 1.5f; 
     [SerializeField] private float speedup = 0.1f;
     [SerializeField] private float drag = 0.9f;
     [SerializeField] private float rotateSpeed = 1f;
@@ -26,6 +27,7 @@ public class HumanControlledNavigation : MonoBehaviour {
 
     private void ControlHuman() {
         Vector2 input = InputManager.Instance.vectorInputs["Move"].Input;
+        bool sprintInput = InputManager.Instance.buttonInputs["Sprint"].Held; 
 
         if (input.y == 0) {
             velocity *= drag;
@@ -35,6 +37,9 @@ public class HumanControlledNavigation : MonoBehaviour {
             float clamp = input.y < 0f ? 0.5f : 1f;
             if (velocity.magnitude > maxSpeed * clamp) {
                 velocity = velocity.normalized * maxSpeed * clamp;
+
+                if (sprintInput)
+                    velocity *= sprintSpeedMultiplier;
             }
         }
 

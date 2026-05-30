@@ -5158,8 +5158,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::HumanInfectionLevel
   maxInfection: 100
   minInfection: 0
-  normalInfectionRate: 10
-  controlledInfectionRate: 20
+  normalInfectionRate: 5
+  controlledInfectionRate: 10
   humanRenderer: {fileID: 1533012354988611528}
   manager: {fileID: 572200601680088061}
   particlesParent: {fileID: 2132091513818050046}
@@ -5176,6 +5176,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HumanControlledNavigation
   maxSpeed: 10
+  sprintSpeedMultiplier: 1.5
   speedup: 0.5
   drag: 0.9
   rotateSpeed: 0.025

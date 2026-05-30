@@ -71,6 +71,8 @@ public class HumanInfectionLevel : MonoBehaviour {
     private void UpdateParticles(float infectionRate) {
         ParticleSystem[] particles = particlesParent.GetComponentsInChildren<ParticleSystem>();
 
+        Debug.Log($"Number of particles systems: {particles.Length}"); 
+
         foreach (ParticleSystem particle in particles) {
             var emission = particle.emission; 
 
