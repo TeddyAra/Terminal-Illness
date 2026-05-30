@@ -8,6 +8,11 @@ public class SpecialHumanAINavigation : HumanAINavigation
 
 
     public override void PickNextWalkingPoint() {
+        if (pointsToWalkTo.Count == 0) {
+            base.PickNextWalkingPoint(); 
+            return; 
+        }
+
         SetDestination(pointsToWalkTo[currentWalkingPointIndex].position); 
         currentWalkingPointIndex++; 
         currentWalkingPointIndex %= pointsToWalkTo.Count;
