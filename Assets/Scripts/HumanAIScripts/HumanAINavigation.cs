@@ -85,6 +85,9 @@ public class HumanAINavigation : MonoBehaviour {
                 break; 
             case HumanAIStates.Dead: 
                 break;
+            case HumanAIStates.ChasingPlayer:
+                ChasePlayer(); 
+                break; 
         }
     }
 
@@ -161,5 +164,9 @@ public class HumanAINavigation : MonoBehaviour {
         SetState(HumanAIStates.Wandering); 
 
         SetDestination(newWalkPoint);
+    }
+
+    public virtual void ChasePlayer() {
+
     }
 }
