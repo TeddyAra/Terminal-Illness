@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class HumanInfectionLevel : MonoBehaviour {
     [SerializeField] private float maxInfection = 100f;
@@ -45,6 +46,11 @@ public class HumanInfectionLevel : MonoBehaviour {
             aiNavigation.SetState(HumanAIStates.Dead);
             //gameObject.layer = LayerMask.NameToLayer("Default");
             manager.humanControlledNavigation.rb.isKinematic = true;
+            StatManager.Instance.IncreaseKills();
+
+            if (TryGetComponent(out SpecialHumanAINavigation s)) {
+                SceneManager.LoadScene("EndScreen");
+            }
         }
     }
 

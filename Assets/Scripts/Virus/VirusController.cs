@@ -94,6 +94,7 @@ public class VirusController : MonoBehaviour {
 
                     float force = Mathf.Lerp(minJumpForce, maxJumpForce, Mathf.Clamp01(jumpTimer / maxHoldLength));
                     ApplyForce(force, jumpAngle, forward);
+                    StatManager.Instance.IncreaseJumps();
                 }
             } else {
                 Vector3 forward = human.transform.forward;
@@ -102,6 +103,7 @@ public class VirusController : MonoBehaviour {
 
                 float force = Mathf.Lerp(minSneezeForce, maxSneezeForce, Mathf.Clamp01(jumpTimer / maxHoldLength));
                 ApplyForce(force, sneezeAngle, forward);
+                StatManager.Instance.IncreaseJumps();
             }
         }
     }
@@ -133,6 +135,8 @@ public class VirusController : MonoBehaviour {
 
         virusCam.gameObject.SetActive(false);
         npcCam.gameObject.SetActive(true);
+
+        StatManager.Instance.IncreaseInfections();
     }
 
     private void ExitBody() {
