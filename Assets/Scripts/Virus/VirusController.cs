@@ -202,4 +202,8 @@ public class VirusController : MonoBehaviour {
         yield return new WaitForFixedUpdate();
         ignoreCollisions = false;
     }
+
+    public bool IsInBody() {
+        return inBody;
+    }
 }
