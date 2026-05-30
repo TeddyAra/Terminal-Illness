@@ -1,17 +1,18 @@
 using UnityEngine;
 
-public class HumanInfectionLevel : MonoBehaviour
-{
+public class HumanInfectionLevel : MonoBehaviour {
     [SerializeField] private float maxInfection = 100f;
     [SerializeField] private float minInfection = 0f;
     [SerializeField] private float infectionRate = 1f;
     [SerializeField] private MeshRenderer humanRenderer;
-    HumanAINavigation humanAINavigation; 
+
+    [SerializeField] private HumanManager manager = null;
+
+    private HumanAINavigation aiNavigation = null;
 
     private MaterialPropertyBlock humanPropertyBlock;
 
-    public bool isInfected = false; 
-
+    private float currentInfectionLevel;
     public float CurrentInfectionLevel {
         get {
             return currentInfectionLevel;
@@ -30,39 +31,33 @@ public class HumanInfectionLevel : MonoBehaviour
             }
         }
     }
+
     public bool IsHostingVirus { get; private set; } = false;
+
     public bool IsDead {
         get {
             return isDead;
         }
         set {
-            isDead = value; 
-            humanAINavigation.SetState(HumanAIStates.Dead);
+            isDead = value;
+            aiNavigation.SetState(HumanAIStates.Dead);
         }
     }
 
     private bool isDead = false;
-    private float currentInfectionLevel;
 
     private void Awake() {
         humanPropertyBlock = new MaterialPropertyBlock();
-        humanAINavigation = GetComponent<HumanAINavigation>(); 
+        aiNavigation = manager.aiNavigation;
     }
 
     private void Update() {
-        IsHostingVirus = isInfected; 
-
         if (IsHostingVirus) {
             CurrentInfectionLevel += infectionRate * Time.deltaTime; 
-            Debug.Log(CurrentInfectionLevel);
         }
-
-        
     }
-   
+
     public void SetHostingVirus(bool isHostingVirus) {
         IsHostingVirus = isHostingVirus;
     }
-
-
 }
