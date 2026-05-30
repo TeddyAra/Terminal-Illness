@@ -28,11 +28,14 @@ public class VirusController : MonoBehaviour {
 
     [SerializeField] private ParticleSystem slimeBurst = null;
 
+    [SerializeField] private Animator animator; 
+
     private bool inBody => human != null;
     private float jumpTimer = 0f;
     private bool isGrounded = false;
     private bool ignoreCollisions = false;
     private float surviveTimer = 0f;
+    private bool prevIsGrounded = false; 
 
     private Collider col = null;
     private Rigidbody rb = null;
@@ -64,6 +67,22 @@ public class VirusController : MonoBehaviour {
         }
 
         surviveSlider.value = surviveTimer / surviveTime;
+
+        if (isGrounded) {
+            if (!prevIsGrounded) {
+                animator.SetBool("IsGrounded", true); 
+            }
+
+            prevIsGrounded = true; 
+        }
+        else {
+            animator.SetBool("IsGrounded", false); 
+            prevIsGrounded = false; 
+            
+            Vector3 normalizedSpeed = rb.linearVelocity.normalized * 3;
+
+            transform.rotation = Quaternion.LookRotation(Vector3.up, normalizedSpeed); 
+        }
     }
 
     private void CheckIsGrounded() {
@@ -98,6 +117,7 @@ public class VirusController : MonoBehaviour {
 
         if (InputManager.Instance.buttonInputs["Jump"].Held && (inBody || isGrounded)) {
             jumpTimer += Time.deltaTime;
+            animator.SetBool("ChargingJump", true); 
         }
 
         if (InputManager.Instance.buttonInputs["Jump"].Up) {
@@ -124,6 +144,9 @@ public class VirusController : MonoBehaviour {
                 ApplyForce(force, sneezeAngle, forward);
                 StatManager.Instance.IncreaseJumps();
             }
+
+            animator.SetBool("ChargingJump", false); 
+            animator.SetTrigger("Jump"); 
         }
     }
 
@@ -180,6 +203,9 @@ public class VirusController : MonoBehaviour {
         if (collision.transform == lastHuman || ignoreCollisions) {
             return;
         }
+
+        transform.rotation = Quaternion.FromToRotation(transform.up, collision.contacts[0].normal); 
+
 
         switch (LayerMask.LayerToName(collision.gameObject.layer)) {
             case "Default":
