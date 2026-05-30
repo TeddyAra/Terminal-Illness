@@ -32,12 +32,26 @@ public class VirusController : MonoBehaviour {
     }
 
     private void Update() {
+        CheckStartControl();
         Jump();
     }
 
     private void LateUpdate() {
         if (inBody) {
             transform.position = human.hidePoint.position;
+        }
+    }
+
+    private void CheckStartControl() {
+        if (!inBody || 
+            human.aiNavigation.currentState == HumanAIStates.ControlledByPlayer ||
+            human.aiNavigation.currentState == HumanAIStates.Dead) 
+        {
+            return;
+        }
+
+        if (InputManager.Instance.buttonInputs["Control"].Down) {
+            human.aiNavigation.SetState(HumanAIStates.ControlledByPlayer);
         }
     }
 
@@ -65,7 +79,6 @@ public class VirusController : MonoBehaviour {
                     ApplyForce(force, jumpAngle, forward);
                 }
             } else {
-                Debug.Log("Jump");
                 Vector3 forward = human.transform.forward;
 
                 ExitBody();
@@ -77,7 +90,6 @@ public class VirusController : MonoBehaviour {
     }
 
     private void ApplyForce(float force, float angle, Vector3 direction) {
-        Debug.Log("Force");
         rb.useGravity = true;
         Vector3 right = Vector3.Cross(direction, Vector3.up);
 

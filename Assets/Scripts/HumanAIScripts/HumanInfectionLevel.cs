@@ -53,7 +53,7 @@ public class HumanInfectionLevel : MonoBehaviour {
 
     private void Update() {
         if (IsHostingVirus) {
-            CurrentInfectionLevel += infectionRate * Time.deltaTime; 
+            //CurrentInfectionLevel += infectionRate * Time.deltaTime; 
         }
     }
 

@@ -1,7 +1,4 @@
-using NUnit.Framework;
 using System.Collections;
-using System.Collections.Generic;
-using Unity.AI.Navigation;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -11,7 +8,7 @@ public class HumanAINavigation : MonoBehaviour {
     [SerializeField] private float maxStationaryTime;
     [SerializeField] private float stoppingDistance;
     [SerializeField] private float deathBombRadius = 5f;
-    [SerializeField] private LayerMask humanLayer; 
+    [SerializeField] private LayerMask humanLayer;
 
     public HumanAIStates currentState = HumanAIStates.Wandering;
 
@@ -60,10 +57,8 @@ public class HumanAINavigation : MonoBehaviour {
                 }
                 break; 
             case HumanAIStates.Stationary:
-                
                 break; 
             case HumanAIStates.ControlledByPlayer:
-
                 break; 
             case HumanAIStates.Dead: 
                 break;
@@ -77,10 +72,11 @@ public class HumanAINavigation : MonoBehaviour {
         float stationaryTime = Random.Range(minStationaryTime, maxStationaryTime); 
         yield return new WaitForSeconds(stationaryTime);
 
-        if (currentState == HumanAIStates.Dead) {
+        if (currentState != HumanAIStates.Stationary) {
             yield break;
 
         }
+
         PickNextWalkingPoint();
         SetState(HumanAIStates.Wandering);
         navMeshAgent.isStopped = false; 
@@ -97,14 +93,18 @@ public class HumanAINavigation : MonoBehaviour {
             case HumanAIStates.Stationary:
                 navMeshAgent.isStopped = true; 
                 navMeshAgent.ResetPath();
+                navMeshAgent.enabled = true;
                 break; 
-            case HumanAIStates.Wandering: 
-
+            case HumanAIStates.Wandering:
+                navMeshAgent.enabled = true;
                 break;
             case HumanAIStates.ControlledByPlayer:
+                navMeshAgent.isStopped = true;
                 navMeshAgent.ResetPath();
+                navMeshAgent.enabled = false;
                 break; 
             case HumanAIStates.Dead:
+                navMeshAgent.isStopped = true;
                 navMeshAgent.ResetPath(); 
                 DeathBomb();
                 break; 
