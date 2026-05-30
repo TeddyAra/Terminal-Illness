@@ -9,12 +9,22 @@ public class HumanAINavigation : MonoBehaviour {
     [SerializeField] private float stoppingDistance;
     [SerializeField] private float deathBombRadius = 5f;
     [SerializeField] private LayerMask humanLayer;
+    [SerializeField] private float maxTimeStuck = 1f;
 
+
+    float timeStuck; 
     public HumanAIStates currentState = HumanAIStates.Wandering;
 
-    [SerializeField] private NavMeshAgent navMeshAgent;
+    private Vector3 startPosition; 
+
+    NavMeshAgent navMeshAgent;
+
+
 
     private void Awake() {
+        navMeshAgent = GetComponent<NavMeshAgent>();
+        startPosition = transform.position;
+
         SpawnHuman();
     }
 
@@ -24,7 +34,7 @@ public class HumanAINavigation : MonoBehaviour {
 
     public void SpawnHuman() {
         gameObject.SetActive(true); 
-        transform.position = PickRandomWalkingSpot(); 
+        //transform.position = PickRandomWalkingSpot(); 
 
         SetState(HumanAIStates.Wandering);
 
@@ -40,7 +50,7 @@ public class HumanAINavigation : MonoBehaviour {
 
     private Vector3 PickRandomWalkingSpot() {
         NavMeshHit hit;
-        Vector3 randomPoint = transform.position + Random.insideUnitSphere * randomWalkingPointMaxDistance;
+        Vector3 randomPoint = startPosition + Random.insideUnitSphere * randomWalkingPointMaxDistance;
 
         if (NavMesh.SamplePosition(randomPoint, out hit, randomWalkingPointMaxDistance, NavMesh.AllAreas)){ 
             return hit.position;     
@@ -52,6 +62,19 @@ public class HumanAINavigation : MonoBehaviour {
     private void HandleHumanStates() {
         switch (currentState) {
             case HumanAIStates.Wandering:
+                if (navMeshAgent.speed < 0.5f) {
+                    timeStuck += Time.deltaTime;
+                    if (timeStuck >= maxTimeStuck) {
+                        timeStuck = 0;
+                        StartCoroutine(StationaryTimer()); 
+                        return; 
+                    }
+                }
+                else {
+                    timeStuck = 0;
+                }
+
+
                 if (navMeshAgent.remainingDistance < stoppingDistance) {
                     StartCoroutine(StationaryTimer()); 
                 }

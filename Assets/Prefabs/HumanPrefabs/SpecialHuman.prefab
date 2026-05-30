@@ -52,8 +52,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpecialHuman
       objectReference: {fileID: 0}
+    - target: {fileID: 8247184995353492631, guid: 06e4e7d3e5cb9654883de7db58ce3835, type: 3}
+      propertyPath: m_Radius
+      value: 1.5
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5913138766400249646, guid: 06e4e7d3e5cb9654883de7db58ce3835, type: 3}
+    - {fileID: 6956994343685346778, guid: 06e4e7d3e5cb9654883de7db58ce3835, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -78,7 +83,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54f2b14d5d26b0840a1bd51524336485, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpecialHumanAINavigation
-  randomWalkingPointMaxDistance: 100
+  randomWalkingPointMaxDistance: 40
   minStationaryTime: 1
   maxStationaryTime: 5
   stoppingDistance: 1
@@ -86,7 +91,6 @@ MonoBehaviour:
   humanLayer:
     serializedVersion: 2
     m_Bits: 256
+  maxTimeStuck: 1
   currentState: 1
-  pointsToWalkTo:
-  - {fileID: 0}
-  - {fileID: 0}
+  pointsToWalkTo: []
