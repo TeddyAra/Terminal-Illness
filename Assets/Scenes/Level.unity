@@ -42643,7 +42643,7 @@ PrefabInstance:
       objectReference: {fileID: 1051862568196730594}
     - target: {fileID: 8862481721497072293, guid: e49d5aae48809b94c9a3ac7a2cd8b4c2, type: 3}
       propertyPath: surviveDepletionRate
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8862481721497072293, guid: e49d5aae48809b94c9a3ac7a2cd8b4c2, type: 3}
       propertyPath: coughSound.Array.size
@@ -220254,6 +220254,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 9956862442775211, guid: 64e2439391adad2418770720578bdf6e, type: 3}
+      propertyPath: m_PixelsPerUnitMultiplier
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 1257713916318960582, guid: 64e2439391adad2418770720578bdf6e, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0.5
@@ -220273,6 +220277,10 @@ PrefabInstance:
     - target: {fileID: 4834009670276915290, guid: 64e2439391adad2418770720578bdf6e, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5980153523244313491, guid: 64e2439391adad2418770720578bdf6e, type: 3}
+      propertyPath: m_PixelsPerUnitMultiplier
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 6566534050678465721, guid: 64e2439391adad2418770720578bdf6e, type: 3}
       propertyPath: m_IsActive
