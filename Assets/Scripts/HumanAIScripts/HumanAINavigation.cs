@@ -75,6 +75,7 @@ public class HumanAINavigation : MonoBehaviour {
                     timeStuck = 0;
                 }
 
+                if (!navMeshAgent.isOnNavMesh) return; 
 
                 if (navMeshAgent.remainingDistance < stoppingDistance) {
                     StartCoroutine(StationaryTimer()); 

@@ -83,7 +83,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2894577674268670747}
   - component: {fileID: 7815785776333817044}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Pivot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
