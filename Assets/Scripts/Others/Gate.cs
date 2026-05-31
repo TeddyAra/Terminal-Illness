@@ -5,21 +5,34 @@ public class Gate : MonoBehaviour
 {
     [SerializeField] private GameObject sprayParticles;
     [SerializeField] private VirusController controller;
+    [SerializeField] private BoxCollider gateBlock; 
 
+    private float timer;
+
+
+    private void Update() {
+        timer += Time.deltaTime; 
+    }
     private void OnTriggerEnter(Collider other) {
-        HumanAINavigation human = other.GetComponent<HumanAINavigation>(); 
-
-        if (human.GetComponent<HumanInfectionLevel>().IsHostingVirus) {
-            StartCoroutine(SprayCoroutine()); 
+        if (timer < 2f) {
+            return;
         }
+
+        StartCoroutine(SprayCoroutine()); 
     }
 
     private IEnumerator SprayCoroutine() {
-        sprayParticles.SetActive(true); 
-        yield return new WaitForSeconds(0.5f); 
-        controller.ExitBody(); 
-        yield return new WaitForSeconds(2f); 
-        sprayParticles.SetActive(false); 
+        timer = 0f; 
+        if (controller.IsInBody()) {
+            Debug.Log($"In body: {controller.IsInBody()}"); 
 
+            sprayParticles.SetActive(true); 
+            gateBlock.enabled = false;
+            yield return new WaitForSeconds(0.5f); 
+            controller.ExitBodyBackwards(); 
+            yield return new WaitForSeconds(2f); 
+            sprayParticles.SetActive(false); 
+            gateBlock.enabled = true;
+        }   
     }
 }

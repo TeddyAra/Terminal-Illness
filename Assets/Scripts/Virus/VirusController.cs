@@ -194,6 +194,27 @@ public class VirusController : MonoBehaviour {
         npcCam.gameObject.SetActive(false);
     }
 
+    public void ExitBodyBackwards() {
+        rb.useGravity = true;
+
+        Vector3 backward = -human.transform.forward;
+
+        if (human.aiNavigation.currentState == HumanAIStates.ControlledByPlayer) {
+            human.aiNavigation.SetState(HumanAIStates.Stationary);
+        }
+        if (!human.infectionLevel.IsDead) {
+            StartCoroutine(human.aiNavigation.StationaryTimer());
+        }
+
+        human.infectionLevel.SetHostingVirus(false);
+        human = null;
+
+        virusCam.gameObject.SetActive(true);
+        npcCam.gameObject.SetActive(false);
+
+        ApplyForce(maxJumpForce, sneezeAngle, backward); 
+    }
+
     private void OnCollisionEnter(Collision collision) {
         Debug.Log("Collision");
         lastHuman = null;
