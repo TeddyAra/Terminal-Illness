@@ -19,7 +19,7 @@ TagManager:
   - WalkableAI
   - NonStickable
   - 
-  - 
+  - HumanTrigger
   - 
   - 
   - 
