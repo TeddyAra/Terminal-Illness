@@ -19818,7 +19818,7 @@ MonoBehaviour:
   sprintSpeedMultiplier: 1.5
   speedup: 0.5
   drag: 0.9
-  rotateSpeed: 0.025
+  rotateSpeed: 0.05
   rb: {fileID: 4785998104497933533}
   manager: {fileID: 572200601680088061}
   npcCam: {fileID: 0}
@@ -19864,7 +19864,7 @@ Rigidbody:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1

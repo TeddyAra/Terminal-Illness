@@ -9,6 +9,8 @@ public class InputManager : MonoBehaviour {
     public Dictionary<string, ButtonInputState> buttonInputs = new Dictionary<string, ButtonInputState>();
     public Dictionary<string, VectorInputState> vectorInputs = new Dictionary<string, VectorInputState>();
 
+    private bool pauseToggle = true;
+
     public static InputManager Instance = null;
 
     private void Awake() {
@@ -46,10 +48,16 @@ public class InputManager : MonoBehaviour {
 
         foreach (InputAction action in inputActions.FindActionMap("Player")) {
             if (action.type == InputActionType.Button && buttonInputs.ContainsKey(action.name)) {
-                buttonInputs[action.name].Update(action);
-            } else if (action.type == InputActionType.Value && vectorInputs.ContainsKey(action.name)) {
+                if (!pauseToggle || action.name == "Pause") {
+                    buttonInputs[action.name].Update(action);
+                }
+            } else if (!pauseToggle && action.type == InputActionType.Value && vectorInputs.ContainsKey(action.name)) {
                 vectorInputs[action.name].Update(action);
             }
         }
+    }
+
+    public void TogglePause(bool toggle) {
+        pauseToggle = toggle;
     }
 }
