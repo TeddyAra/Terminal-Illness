@@ -16,7 +16,7 @@ public class HumanInfectionLevel : MonoBehaviour {
     [SerializeField] private GameObject humanRagdollPrefab;
     [SerializeField] private GameObject[] particleObjects; 
 
-    
+    private AudioSource audioSource;
 
     private HumanAINavigation aiNavigation = null;
 
@@ -64,7 +64,6 @@ public class HumanInfectionLevel : MonoBehaviour {
             //gameObject.layer = LayerMask.NameToLayer("Default");
             manager.humanControlledNavigation.rb.isKinematic = true;
 
-
         }
     }
 
@@ -73,6 +72,7 @@ public class HumanInfectionLevel : MonoBehaviour {
     private void Awake() {
         humanPropertyBlock = new MaterialPropertyBlock();
         aiNavigation = manager.aiNavigation;
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void Update() {
@@ -87,8 +87,8 @@ public class HumanInfectionLevel : MonoBehaviour {
 
     private IEnumerator SpawnRagdollDelayed() {
         yield return new WaitForSeconds(0.5f); 
-        Instantiate(humanRagdollPrefab, transform.position, humanRagdollPrefab.transform.rotation); 
-
+        GameObject ragdoll = Instantiate(humanRagdollPrefab, transform.position, humanRagdollPrefab.transform.rotation); 
+        ragdoll.GetComponent<Ragdoll>().PlayDeathSound();
         gameObject.SetActive(false);
     }
 
