@@ -40,10 +40,15 @@ public class VirusController : MonoBehaviour {
     public HumanManager human = null;
     private Transform lastHuman = null;
 
+    public AudioClip[] landSplat;
+    public AudioClip takeHuman;
+    public AudioClip takeoff;
+    private AudioSource audioSource;
+
     private void Start() {
         rb = GetComponent<Rigidbody>();
         col = GetComponent<Collider>();
-
+        audioSource = GetComponent<AudioSource>();
         surviveTimer = surviveTime;
     }
 
@@ -192,6 +197,8 @@ public class VirusController : MonoBehaviour {
 
         virusCam.gameObject.SetActive(true);
         npcCam.gameObject.SetActive(false);
+
+        audioSource.PlayOneShot(takeoff);
     }
 
     private void OnCollisionEnter(Collision collision) {
