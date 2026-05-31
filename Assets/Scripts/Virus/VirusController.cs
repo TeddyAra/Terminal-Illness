@@ -169,6 +169,8 @@ public class VirusController : MonoBehaviour {
 
         human.infectionLevel.SetHostingVirus(true);
 
+        GameplayUIManager.Instance.ToggleActions(false);
+
         virusCam.gameObject.SetActive(false);
         npcCam.gameObject.SetActive(true);
 
@@ -189,6 +191,8 @@ public class VirusController : MonoBehaviour {
 
         human.infectionLevel.SetHostingVirus(false);
         human = null;
+
+        GameplayUIManager.Instance.ToggleActions(true);
 
         virusCam.gameObject.SetActive(true);
         npcCam.gameObject.SetActive(false);
