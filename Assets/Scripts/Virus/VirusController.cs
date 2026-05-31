@@ -154,7 +154,7 @@ public class VirusController : MonoBehaviour {
 
                 ExitBody();
                 
-                int coughSoundIndex = (int)Random.Range(0, this.coughSound.Length - 1);
+                int coughSoundIndex = 1;
                 audioSource.PlayOneShot(this.coughSound[coughSoundIndex]); 
 
                 

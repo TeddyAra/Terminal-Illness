@@ -146036,6 +146036,18 @@ PrefabInstance:
       propertyPath: controller
       value: 
       objectReference: {fileID: 401129301}
+    - target: {fileID: 1906178947100769604, guid: e87bf425ea7e09e46a999eb148eb7b03, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3133553099706854151, guid: e87bf425ea7e09e46a999eb148eb7b03, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5184784771764253989, guid: e87bf425ea7e09e46a999eb148eb7b03, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 5402646471975908023, guid: e87bf425ea7e09e46a999eb148eb7b03, type: 3}
       propertyPath: m_LocalPosition.x
       value: 153.917
@@ -146079,6 +146091,10 @@ PrefabInstance:
     - target: {fileID: 6572241477336711651, guid: e87bf425ea7e09e46a999eb148eb7b03, type: 3}
       propertyPath: m_Name
       value: Gate
+      objectReference: {fileID: 0}
+    - target: {fileID: 6572241477336711651, guid: e87bf425ea7e09e46a999eb148eb7b03, type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
