@@ -226808,7 +226808,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 9956862442775211, guid: 64e2439391adad2418770720578bdf6e, type: 3}
       propertyPath: m_PixelsPerUnitMultiplier
-      value: 10
+      value: 3.24
+      objectReference: {fileID: 0}
+    - target: {fileID: 848594692931989027, guid: 64e2439391adad2418770720578bdf6e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1257713916318960582, guid: 64e2439391adad2418770720578bdf6e, type: 3}
       propertyPath: m_AnchorMax.x
