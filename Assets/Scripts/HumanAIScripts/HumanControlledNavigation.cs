@@ -32,7 +32,13 @@ public class HumanControlledNavigation : MonoBehaviour {
         Vector2 input = InputManager.Instance.vectorInputs["Move"].Input;
         sprintInput = InputManager.Instance.buttonInputs["Sprint"].Held;
 
-        velocity.y = 0f;
+        bool isGrounded = Physics.OverlapSphere(transform.position, 0.5f, 1 << LayerMask.NameToLayer("Default")).Length > 0;
+
+        if (isGrounded) {
+            velocity.y = 0f;
+        } else {
+            velocity.y += gravity * Time.fixedDeltaTime;
+        }
 
         if (input.y == 0) {
             velocity *= drag;
@@ -44,12 +50,10 @@ public class HumanControlledNavigation : MonoBehaviour {
                 velocity = velocity.normalized * maxSpeed * clamp;
 
                 if (sprintInput) {
-                    velocity *= sprintSpeedMultiplier; 
+                    velocity *= sprintSpeedMultiplier;
                 }
             }
         }
-
-        //velocity.y = gravity;
         rb.linearVelocity = velocity;
 
         if (npcCam == null) {

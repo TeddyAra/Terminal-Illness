@@ -65,6 +65,7 @@ public class VirusController : MonoBehaviour {
         if (inBody) {
             transform.position = human.hidePoint.position;
             surviveTimer += Time.deltaTime * surviveAdditionRate;
+            surviveTimer = Mathf.Clamp(surviveTimer, 0, surviveTime);
         } else {
             surviveTimer -= Time.deltaTime * surviveDepletionRate;
             if (surviveTimer <= 0f) {

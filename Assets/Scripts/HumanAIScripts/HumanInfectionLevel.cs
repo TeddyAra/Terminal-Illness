@@ -64,6 +64,7 @@ public class HumanInfectionLevel : MonoBehaviour {
             //gameObject.layer = LayerMask.NameToLayer("Default");
             manager.humanControlledNavigation.rb.isKinematic = true;
 
+
         }
     }
 
