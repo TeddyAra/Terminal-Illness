@@ -6,6 +6,7 @@ public class HumanControlledNavigation : MonoBehaviour {
     [SerializeField] private float speedup = 0.1f;
     [SerializeField] private float drag = 0.9f;
     [SerializeField] private float rotateSpeed = 1f;
+    [SerializeField] private float gravity = -9.81f;
     public Rigidbody rb = null;
 
     [SerializeField] private HumanManager manager = null;
@@ -29,7 +30,9 @@ public class HumanControlledNavigation : MonoBehaviour {
 
     private void ControlHuman() {
         Vector2 input = InputManager.Instance.vectorInputs["Move"].Input;
-        sprintInput = InputManager.Instance.buttonInputs["Sprint"].Held; 
+        sprintInput = InputManager.Instance.buttonInputs["Sprint"].Held;
+
+        velocity.y = 0f;
 
         if (input.y == 0) {
             velocity *= drag;
@@ -42,11 +45,11 @@ public class HumanControlledNavigation : MonoBehaviour {
 
                 if (sprintInput) {
                     velocity *= sprintSpeedMultiplier; 
-                    
                 }
             }
         }
 
+        //velocity.y = gravity;
         rb.linearVelocity = velocity;
 
         if (npcCam == null) {
