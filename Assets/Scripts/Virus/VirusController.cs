@@ -40,10 +40,15 @@ public class VirusController : MonoBehaviour {
     public HumanManager human = null;
     private Transform lastHuman = null;
 
+    public AudioClip[] landSplat;
+    public AudioClip takeHuman;
+    public AudioClip takeoff;
+    private AudioSource audioSource;
+
     private void Start() {
         rb = GetComponent<Rigidbody>();
         col = GetComponent<Collider>();
-
+        audioSource = GetComponent<AudioSource>();
         surviveTimer = surviveTime;
     }
 
@@ -68,7 +73,10 @@ public class VirusController : MonoBehaviour {
 
         if (isGrounded) {
             if (!prevIsGrounded) {
-                animator.SetBool("IsGrounded", true); 
+                animator.SetBool("IsGrounded", true);
+
+                int randomIndex = Random.Range(0, landSplat.Length);
+                audioSource.PlayOneShot(landSplat[randomIndex]);
             }
 
             prevIsGrounded = true; 
@@ -107,6 +115,7 @@ public class VirusController : MonoBehaviour {
 
             ExitBody();
             ApplyForce(minSneezeForce, sneezeAngle, forward);
+            
         }
 
         if (InputManager.Instance.buttonInputs["Jump"].Down) {
@@ -132,6 +141,7 @@ public class VirusController : MonoBehaviour {
                     float force = Mathf.Lerp(minJumpForce, maxJumpForce, Mathf.Clamp01(jumpTimer / maxHoldLength));
                     ApplyForce(force, jumpAngle, forward);
                     StatManager.Instance.IncreaseJumps();
+                    audioSource.PlayOneShot(takeoff);
                 }
             } else {
                 Vector3 forward = human.transform.forward;
@@ -177,6 +187,8 @@ public class VirusController : MonoBehaviour {
         if (human.infectionLevel.CurrentInfectionLevel != 0) {
             StatManager.Instance.IncreaseInfections();
         }
+
+        audioSource.PlayOneShot(takeHuman);
     }
 
     public void ExitBody() {
@@ -196,6 +208,8 @@ public class VirusController : MonoBehaviour {
 
         virusCam.gameObject.SetActive(true);
         npcCam.gameObject.SetActive(false);
+
+        audioSource.PlayOneShot(takeoff);
     }
 
     public void ExitBodyBackwards() {
