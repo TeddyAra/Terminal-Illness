@@ -19770,7 +19770,7 @@ MonoBehaviour:
   deathBombRadius: 5
   humanLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   maxTimeStuck: 1
   animator: {fileID: 6227212302796545751}
   currentState: 0
