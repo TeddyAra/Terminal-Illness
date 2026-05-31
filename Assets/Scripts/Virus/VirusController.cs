@@ -1,6 +1,5 @@
-using System.Collections;
+using System.Linq;
 using Unity.Cinemachine;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -33,7 +32,6 @@ public class VirusController : MonoBehaviour {
     private bool inBody => human != null;
     private float jumpTimer = 0f;
     private bool isGrounded = false;
-    private bool ignoreCollisions = false;
     private float surviveTimer = 0f;
     private bool prevIsGrounded = false; 
 
@@ -163,14 +161,11 @@ public class VirusController : MonoBehaviour {
         rb.linearVelocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
 
-        StartCoroutine(IgnoreCollisions());
-        col.excludeLayers = 1 << LayerMask.NameToLayer("Human");
-        rb.excludeLayers = 1 << LayerMask.NameToLayer("Human");
-
         this.human = human;
-        lastHuman = human.transform;
         npcCam.Follow = human.transform;
         npcCam.LookAt = human.transform;
+         
+        lastHuman = human.transform;
 
         human.infectionLevel.SetHostingVirus(true);
 
@@ -200,12 +195,9 @@ public class VirusController : MonoBehaviour {
     }
 
     private void OnCollisionEnter(Collision collision) {
-        if (collision.transform == lastHuman || ignoreCollisions) {
-            return;
-        }
-
+        Debug.Log("Collision");
+        lastHuman = null;
         transform.rotation = Quaternion.FromToRotation(transform.up, collision.contacts[0].normal); 
-
 
         switch (LayerMask.LayerToName(collision.gameObject.layer)) {
             case "Default":
@@ -213,17 +205,6 @@ public class VirusController : MonoBehaviour {
                 rb.angularVelocity = Vector3.zero;
                 rb.useGravity = false;
                 slimeBurst.Play();
-                break;
-            case "Human":
-                HumanManager human = collision.gameObject.GetComponent<HumanManager>();
-                if (human.infectionLevel.IsDead) {
-                    rb.linearVelocity = Vector3.zero;
-                    rb.angularVelocity = Vector3.zero;
-                    //rb.useGravity = false;
-                    slimeBurst.Play();
-                } else {
-                    EnterBody(human);
-                }
                 break;
             case "NonStickable":
                 rb.linearVelocity = Vector3.zero;
@@ -233,25 +214,24 @@ public class VirusController : MonoBehaviour {
         }
     }
 
-    private void OnCollisionExit(Collision collision) {
-        if (collision.transform == lastHuman || ignoreCollisions) {
-            StartCoroutine(ResetLastHuman());
+    private void OnTriggerEnter(Collider other) {
+        if (lastHuman != null && other.transform.parent != null && other.transform.parent == lastHuman) {
+            return;
         }
-    }
 
-    private IEnumerator ResetLastHuman() {
-        yield return null;
-        Debug.Log("Reset");
-        lastHuman = null;
-        StartCoroutine(IgnoreCollisions());
-        col.excludeLayers = 0;
-        rb.excludeLayers = 0;
-    }
-
-    private IEnumerator IgnoreCollisions() {
-        ignoreCollisions = true;
-        yield return new WaitForFixedUpdate();
-        ignoreCollisions = false;
+        switch (LayerMask.LayerToName(other.gameObject.layer)) {
+            case "HumanTrigger":
+                HumanManager human = other.transform.parent.GetComponent<HumanManager>();
+                if (human.infectionLevel.IsDead) {
+                    rb.linearVelocity = Vector3.zero;
+                    rb.angularVelocity = Vector3.zero;
+                    //rb.useGravity = false;
+                    slimeBurst.Play();
+                } else {
+                    EnterBody(human);
+                }
+                break;
+        }
     }
 
     public bool IsInBody() {

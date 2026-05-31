@@ -64,6 +64,7 @@ MonoBehaviour:
   npcCam: {fileID: 0}
   slimeBurst: {fileID: 8552966820453744384}
   animator: {fileID: 4502278239978251159}
+  human: {fileID: 0}
 --- !u!135 &4453769622620443486
 SphereCollider:
   m_ObjectHideFlags: 0
