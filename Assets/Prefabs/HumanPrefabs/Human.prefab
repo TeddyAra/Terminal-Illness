@@ -19788,8 +19788,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::HumanInfectionLevel
   maxInfection: 100
   minInfection: 0
-  normalInfectionRate: 15
-  controlledInfectionRate: 30
+  normalInfectionRate: 5
+  controlledInfectionRate: 10
   controlledSprintingInfectionRate: 2.5
   humanRenderer: {fileID: 7562462022122262268}
   manager: {fileID: 572200601680088061}

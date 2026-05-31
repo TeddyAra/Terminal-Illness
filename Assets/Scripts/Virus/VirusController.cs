@@ -195,9 +195,7 @@ public class VirusController : MonoBehaviour {
         virusCam.gameObject.SetActive(false);
         npcCam.gameObject.SetActive(true);
 
-        if (human.infectionLevel.CurrentInfectionLevel != 0) {
-            StatManager.Instance.IncreaseInfections();
-        }
+        StatManager.Instance.IncreaseInfections();
 
         audioSource.PlayOneShot(takeHuman);
     }
