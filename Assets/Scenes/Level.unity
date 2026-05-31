@@ -42643,7 +42643,7 @@ PrefabInstance:
       objectReference: {fileID: 1051862568196730594}
     - target: {fileID: 8862481721497072293, guid: e49d5aae48809b94c9a3ac7a2cd8b4c2, type: 3}
       propertyPath: surviveDepletionRate
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8862481721497072293, guid: e49d5aae48809b94c9a3ac7a2cd8b4c2, type: 3}
       propertyPath: coughSound.Array.size
@@ -146080,6 +146080,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Gate
       objectReference: {fileID: 0}
+    - target: {fileID: 6572241477336711651, guid: e87bf425ea7e09e46a999eb148eb7b03, type: 3}
+      propertyPath: m_TagString
+      value: Gate
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -220258,17 +220262,25 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 848594692931989027, guid: 64e2439391adad2418770720578bdf6e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1257713916318960582, guid: 64e2439391adad2418770720578bdf6e, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 1257713916318960582, guid: 64e2439391adad2418770720578bdf6e, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1508747337010416784, guid: 64e2439391adad2418770720578bdf6e, type: 3}
       propertyPath: m_Name
       value: Canvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 6566534050678465721, guid: 64e2439391adad2418770720578bdf6e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6861298573800691155, guid: 64e2439391adad2418770720578bdf6e, type: 3}
       propertyPath: m_Pivot.x
@@ -220348,6 +220360,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6861298573800691155, guid: 64e2439391adad2418770720578bdf6e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7894620304504518130, guid: 64e2439391adad2418770720578bdf6e, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

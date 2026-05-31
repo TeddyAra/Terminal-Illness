@@ -14,6 +14,11 @@ public class Gate : MonoBehaviour
         timer += Time.deltaTime; 
     }
     private void OnTriggerEnter(Collider other) {
+        if (other.TryGetComponent(out HumanAINavigation h)) {
+            if (h.currentState != HumanAIStates.ControlledByPlayer) {
+                return;
+            }
+        }
         if (timer < 2f) {
             return;
         }

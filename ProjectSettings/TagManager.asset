@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Human
   - Security
+  - Gate
   layers:
   - Default
   - TransparentFX
