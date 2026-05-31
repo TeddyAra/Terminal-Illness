@@ -44,12 +44,15 @@ public class VirusController : MonoBehaviour {
     public AudioClip takeHuman;
     public AudioClip takeoff;
     private AudioSource audioSource;
+    public AudioClip[] coughSound; 
 
     private void Start() {
         rb = GetComponent<Rigidbody>();
         col = GetComponent<Collider>();
         audioSource = GetComponent<AudioSource>();
         surviveTimer = surviveTime;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     private void Update() {
@@ -145,8 +148,15 @@ public class VirusController : MonoBehaviour {
                 }
             } else {
                 Vector3 forward = human.transform.forward;
+                
+                human.aiNavigation.animator.SetTrigger("Cough"); 
 
                 ExitBody();
+                
+                int coughSound = (int)Random.Range(0, this.coughSound.Length - 1);
+                audioSource.PlayOneShot(this.coughSound[coughSound]); 
+
+                
 
                 float force = Mathf.Lerp(minSneezeForce, maxSneezeForce, Mathf.Clamp01(jumpTimer / maxHoldLength));
                 ApplyForce(force, sneezeAngle, forward);

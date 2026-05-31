@@ -10,7 +10,7 @@ public class HumanAINavigation : MonoBehaviour {
     [SerializeField] private float deathBombRadius = 5f;
     [SerializeField] private LayerMask humanLayer;
     [SerializeField] private float maxTimeStuck = 1f;
-    [SerializeField] private Animator animator; 
+    public Animator animator; 
 
 
     float timeStuck; 
