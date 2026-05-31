@@ -51,7 +51,7 @@ public class HumanInfectionLevel : MonoBehaviour {
         }
         set {
             StatManager.Instance.IncreaseKills();
-            if (TryGetComponent(out SpecialHumanAINavigation s)) {
+            if (TryGetComponent(out TargetAIHuman s)) {
                 StatManager.Instance.ToggleWinStatus();
                 SceneManager.LoadScene("EndScreen");
                 return;
