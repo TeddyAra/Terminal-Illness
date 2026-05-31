@@ -73,7 +73,10 @@ public class VirusController : MonoBehaviour {
 
         if (isGrounded) {
             if (!prevIsGrounded) {
-                animator.SetBool("IsGrounded", true); 
+                animator.SetBool("IsGrounded", true);
+
+                int randomIndex = Random.Range(0, landSplat.Length);
+                audioSource.PlayOneShot(landSplat[randomIndex]);
             }
 
             prevIsGrounded = true; 
@@ -112,6 +115,7 @@ public class VirusController : MonoBehaviour {
 
             ExitBody();
             ApplyForce(minSneezeForce, sneezeAngle, forward);
+            
         }
 
         if (InputManager.Instance.buttonInputs["Jump"].Down) {
@@ -137,6 +141,7 @@ public class VirusController : MonoBehaviour {
                     float force = Mathf.Lerp(minJumpForce, maxJumpForce, Mathf.Clamp01(jumpTimer / maxHoldLength));
                     ApplyForce(force, jumpAngle, forward);
                     StatManager.Instance.IncreaseJumps();
+                    audioSource.PlayOneShot(takeoff);
                 }
             } else {
                 Vector3 forward = human.transform.forward;
@@ -180,6 +185,8 @@ public class VirusController : MonoBehaviour {
         if (human.infectionLevel.CurrentInfectionLevel != 0) {
             StatManager.Instance.IncreaseInfections();
         }
+
+        audioSource.PlayOneShot(takeHuman);
     }
 
     public void ExitBody() {
